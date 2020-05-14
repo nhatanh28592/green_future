@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>MAP API</title>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #right-panel {
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+      }
+
+      #right-panel select, #right-panel input {
+        font-size: 15px;
+      }
+
+      #right-panel select {
+        width: 100%;
+      }
+
+      #right-panel i {
+        font-size: 12px;
+      }
+      #right-panel {
+        font-family: Arial, Helvetica, sans-serif;
+        position: absolute;
+        right: 5px;
+        top: 60%;
+        margin-top: -195px;
+        height: 330px;
+        width: 200px;
+        padding: 5px;
+        z-index: 5;
+        border: 1px solid #999;
+        background: #fff;
+      }
+      h2 {
+        font-size: 22px;
+        margin: 0 0 5px 0;
+      }
+      ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        height: 271px;
+        width: 200px;
+        overflow-y: scroll;
+      }
+      li {
+        background-color: #f1f1f1;
+        padding: 10px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+      li:nth-child(odd) {
+        background-color: #fcfcfc;
+      }
+      #more {
+        width: 100%;
+        margin: 5px 0 0 0;
+      }
+      label{
+        color: white;
+      }
+    </style>
+    <script>
+      var map;
+      var mapInfoArr = [];
+      var markerClick = null;
+      var circle = null;
+      var markersArray = [];
+      var mapTmp;
+      var directionsService;
+      var directionsDisplayArr = [];
+
+      $(document).ready(function(){
+        $("button[name='search']").click(function(){
+          nearBySearch();
+        });
+        $("button[name='circle']").click(function(){
+          var lat = parseFloat($("input[name='lat']").val());
+          var lng = parseFloat($("input[name='lng']").val());
+          var radius = parseFloat($("input[name='radius']").val());
+          circleMap(lat, lng, radius);
+          $("button[name='circle']").prop("disabled", true);
+        });
+        $("button[name='clear_circle']").click(function(){
+          clearCircleMap();
+          $("button[name='circle']").prop("disabled", false);
+        });
+      });
+
+      function initMap() {
+        // Create the map.
+        directionsService = new google.maps.DirectionsService();
+        var pyrmont = {lat: 16.041758, lng: 108.222743};
+        var geocoder = new google.maps.Geocoder();
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: pyrmont,
+          zoom: 17
+        });
+      
+        mapTmp = map;
+        google.maps.event.addListener(map, 'click', function(event) {
+          // clear marker
+          if(markerClick != null) {
+          	markerClick.setMap(null);
+          }
+   			  placeMarker(event.latLng);
+		      $("input[name='lat']").val(event.latLng.lat());
+		      $("input[name='lng']").val(event.latLng.lng());
+		      var latlng = new google.maps.LatLng(event.latLng.lat(), event.latLng.lng());
+		      geocoder.geocode({
+			    latLng: latlng
+			   }, function(responses) {
+			     if (responses && responses.length > 0) {
+			        $("input[name='location']").val(responses[0].formatted_address);
+			     } else {
+			        $("input[name='location']").val('Cannot determine address at this location.');
+			     }
+		      });
+		    });
+      }
+
+  		function placeMarker(location) {
+  	    var marker = new google.maps.Marker({
+	        position: location, 
+	        map: map
+  	    });
+  	    markerClick = marker;
+      }
+
+      function circleMap(lat, lng, radius){
+        // Create circle
+        circle = new google.maps.Circle({
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillOpacity: 0.35,
+            map: mapTmp,
+            center: {lat: lat, lng: lng},
+            radius: radius
+        });
+      }
+
+      function clearCircleMap() {
+        if (circle != null) {
+          circle.setMap(null);  
+        }
+      }
+
+      function nearBySearch() {
+      	var lat = parseFloat($("input[name='lat']").val());
+      	var lng = parseFloat($("input[name='lng']").val());
+        var radius = parseFloat($("input[name='radius']").val());
+        var type = $("select[name='type']").val();
+        clearAllMarket();
+        search(type, lat, lng, radius);
+      }
+
+      function search(type, lat, lng, radius) {
+      	$.ajax({
+	        type: 'POST',
+	        url: "/near_by_search",
+	        async: true,
+	        data:JSON.stringify({
+	                type: type,
+	                lat: lat,
+	                lng: lng,
+                  radius: radius
+	        }),
+	        dataType: 'json',
+	        contentType: 'application/json; charset=utf-8',
+	        success: function (data) {  
+            var locationArr = [];
+            var places = [];
+            var lat1 = parseFloat(data.lat);
+            var lng1 = parseFloat(data.lng);
+            var radius = parseFloat(data.radius);
+	         	if(data.map_info_arr.length > 0) {
+              locationArr = data.map_info_arr;
+              for (i = 0; i < locationArr.length; i++) {
+                var lat2 = parseFloat(locationArr[i].lat);
+                var lng2 = parseFloat(locationArr[i].lng);
+                if (getDistance(lat1, lng1, lat2, lng2) <= radius) {
+                  places.push(locationArr[i]);
+                }
+              }
+            }
+            displayOnMap(places, lat1, lng1);
+	        },
+	        error: function (xhr, ajaxOptions, thrownError) { 
+	        	alert("error");
+	        	return false;
+	        }
+		    });
+      }
+
+      function displayOnMap(places, lat, lng) {
+        var directionsInfo = [];
+        var bounds = new google.maps.LatLngBounds();
+        for (var i = 0, place; place = places[i]; i++) {
+        
+        var location = new google.maps.LatLng(place.lat, place.lng);
+        var start = new google.maps.LatLng(lat,lng);
+        var request = {
+          origin:start, 
+          destination:location,
+          travelMode: google.maps.DirectionsTravelMode.DRIVING
+        };
+        directionsInfo.push({
+          lat: place.lat,
+          name: place.name,
+          icon: place.icon,
+          start: start,
+          destination: location
+        });
+        var infoDisplay = [];
+        directionsService.route(request, function(response, status) {
+          if (status == google.maps.DirectionsStatus.OK) {
+            var currentLat = response.request.destination.location.lat();
+            dataMap = places.filter(e => e.lat == currentLat)[0];
+            var image = {
+              url: dataMap.icon,
+              size: new google.maps.Size(71, 71),
+              origin: new google.maps.Point(0, 0),
+              anchor: new google.maps.Point(17, 34),
+              scaledSize: new google.maps.Size(25, 25)
+            };
+            var marker = new google.maps.Marker({
+              map: mapTmp,
+              icon: image,
+              title: dataMap.name,
+              position: response.request.destination.location,
+              label: {
+                text: dataMap.name + " " + response.routes[0].legs[0].distance.text + " " + response.routes[0].legs[0].duration.text,
+                color: "red",
+                fontSize: "12px"
+              }
+            });
+
+            // Set event click marker
+            marker.addListener('click', function() {
+              var currentLat = $(this)[0].position.lat();
+              var requestData = directionsInfo.filter(e => e.lat == currentLat)[0];
+              var thisIs = this;
+
+              var requestMap = {
+                origin: requestData.start, 
+                destination: requestData.destination,
+                travelMode: google.maps.DirectionsTravelMode.DRIVING
+              };
+              directionsService.route(requestMap, function(responseMap, statusMap) {
+                if (statusMap == google.maps.DirectionsStatus.OK) {
+                  clearAllDirectionsDisplay();
+                  var directionsDisplay = new google.maps.DirectionsRenderer({ polylineOptions: { strokeColor: getRandomColor() } });
+                  directionsDisplay.setMap(mapTmp);
+                  directionsDisplayArr.push(directionsDisplay);
+                  directionsDisplay.setDirections(responseMap);
+                  var iw = new google.maps.InfoWindow({
+                    content: '<img src="' + requestData.icon + '" alt="Trulli" width="50" height="50">' + '<b>' + requestData.name + '</b><br>' + "Info: " + response.routes[0].legs[0].distance.text + " " + response.routes[0].legs[0].duration.text
+                  });
+                  iw.open(map, thisIs);
+                }
+              });
+            });
+
+            markersArray.push(marker);
+          }
+        });
+        bounds.extend(location);
+        }
+        map.fitBounds(bounds);
+      }
+
+      function clearAllMarket() {
+        for (var i = 0; i < markersArray.length; i++ ) {
+          markersArray[i].setMap(null);
+        }
+        markersArray.length = 0;
+      }
+
+      function clearAllDirectionsDisplay() {
+        for (var i = 0; i < directionsDisplayArr.length; i++ ) {
+          directionsDisplayArr[i].setMap(null);
+        }
+        directionsDisplayArr.length = 0;
+      }
+
+      function toRadians(Value) {
+        return Value * Math.PI / 180;
+      }
+
+      function getRandomColor() {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+          color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+      }
+
+      function getDistance(lat1, lng1, lat2, lng2) {
+        var R = 6371e3; // metres
+        var φ1 = toRadians(lat1);
+        var φ2 = toRadians(lat2);
+        var Δφ = toRadians(lat2-lat1);
+        var Δλ = toRadians(lng2-lng1);
+
+        var a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+                Math.cos(φ1) * Math.cos(φ2) *
+                Math.sin(Δλ/2) * Math.sin(Δλ/2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+        return R * c;
+      }
+
+    </script>
+  </head>
+  <body>
+  <div class="row" style="background-color:black;">
+    <div class="col-sm-1">
+    </div>
+    <div class="col-sm-1">
+      <div class="form-group">
+        <label for="type">Type</label>
+        <select class="form-control" name="type">
+        <% types.forEach(function(type) { %>
+          <option><%= type.type %></option>
+        <% }); %>
+        </select>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <label for="location">Location</label>
+    	<input type="text" class="form-control" name="location" placeholder="location">
+    	<input type="hidden" class="form-control" name="lat" value="">
+    	<input type="hidden" class="form-control" name="lng" value="">
+    </div>
+    <div class="col-sm-2">
+      <label for="radius">radius</label>
+    	<input type="text" class="form-control" name="radius" placeholder="radius">
+    </div>
+    <div class="col-sm-1">
+      <label for="search">Search</label><br>
+      <button type="button" name="search" class="btn btn-info">
+          <span class="glyphicon glyphicon-search"></span> 
+      </button>
+    </div>
+    <div class="col-sm-1">
+      <label for="search">Show radius</label><br>
+      <button class="btn btn-info" name="circle">
+          <span class="glyphicon glyphicon-screenshot"></span> 
+        </button>
+    </div>
+    <div class="col-sm-1">
+      <label for="search">Clear radius</label><br>
+      <button class="btn btn-warning" name="clear_circle">
+          <span class="glyphicon glyphicon-ban-circle"></span> 
+        </button>
+    </div>
+  </div>
+    <div id="map"></div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBky-9Ll9VsdPAov0BqiDZMI8GIRG3AuUM&libraries=places&callback=initMap" async defer></script>
+  </body>
+</html>

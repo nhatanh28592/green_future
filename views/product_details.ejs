@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Điện Nước Wartec</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Unishop - Universal E-Commerce Template">
+    <meta name="author" content="Rokaux">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="apple-touch-icon" href="touch-icon-iphone.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="touch-icon-ipad.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="touch-icon-iphone-retina.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="touch-icon-ipad-retina.png">
+    <link rel="stylesheet" media="screen" href="themes/product_template/css/vendor.min.css">
+    <link id="mainStyles" rel="stylesheet" media="screen" href="themes/product_template/css/styles.min.css">
+    <link rel="stylesheet" media="screen" href="themes/product_template/customizer/customizer.min.css">
+	<link href="themes/sweetalert/css/sweetalert.min.css" rel="stylesheet"/>
+<!-- fav and touch icons -->
+    <link rel="shortcut icon" href="themes/img/logo.gif">
+
+    <script src="themes/jquery/jquery.min.js"></script>
+    <script src="themes/js/main.js" type="text/javascript"></script>
+    <script src="themes/product/js/product_detail.js" type="text/javascript"></script>
+    <script src="themes/sweetalert/js/sweetalert.min.js" type="text/javascript"></script>
+    <script src="themes/product_template/js/modernizr.min.js"></script>
+  </head>
+<body style="background-color:azure">
+<%- include wellcome.ejs %>
+<!-- Header End====================================================================== -->
+
+		<div class="offcanvas-wrapper" style="background-color: #f5f5f5;">
+		<section class="container padding-top-1x" style="background-color:white;">
+			<h3 class="text-center mb-30" style="color:blue"><%= product.info_product.name %></h3>
+				<div class="row" style="background-color: #ff9800">
+				<div class="col-md-6 col-sm-6" style="">
+					<br>
+					<div class="card mb-30"><a class="card-img-tiles picture" style="cursor: pointer;">
+						<div class="inner">
+							<div class="main-img"><img src="upload/<%= product.info_product.main_file %>" alt="Category"></div>
+							<div class="thumblist">
+								<% product.file.forEach(function(file, index) { %>
+										<img class="img_show" src="upload/<%= file.fileName %>" alt="Category">
+								<% }); %>
+							</div>
+			            </div></a>
+						<div class="card-body text-center">
+			                <h4 class="card-title" style="color:blue"><%= product.info_product.name %></h4>
+			                <p class="money_format" style="color:red; font-weight:bold;"><%= product.info_product.price %></p><button name="add_cart" class="btn btn-outline-primary btn-sm" href="">Thêm vào giỏ hàng</button>
+			            </div>
+					</div>
+				</div>
+
+				<div class="col-md-6 col-sm-6" style="">
+					<br>
+					<div class="card mb-30">		
+					<form class="form-horizontal qtyFrm" action="buy_now" method="POST">
+					  <div class="control-group" style="padding:15px">
+						<input type="hidden" name="price" value="<%= product.info_product.price %>">
+						<input type="hidden" name="product_id" value="<%= product._id %>">
+						<input type="hidden" name="product_name" value="<%= product.info_product.name %>">
+						<input type="hidden" name="product_main_file" value="<%= product.info_product.main_file %>">
+						<input type="hidden" name="date" id="todayDate"/>
+						<script type="text/javascript">
+							function getDate(){
+							    var today = new Date();
+							    var dd = today.getDate();
+							    var mm = today.getMonth()+1; //January is 0!
+							    var yyyy = today.getFullYear();
+							    today = dd + "/" + mm + "/" + yyyy;
+							    document.getElementById("todayDate").value = today;
+							}
+							getDate();
+						</script>
+						<div class="controls">
+						<div>
+							<div><b>Mô tả: </b>
+								<div><%= product.info_product.description %></div>
+							</div>
+							<br>
+							<div><b>Số lượng: </b> 
+								<div> <input type="number" name="input_number_product" class="form-control" value="1" min="1"/></div>
+							<div>
+								<br>
+								<span style="font-weight:bold;color:blue;font-size:5">Thành tiền: </span><span class="money_format" id="money" style="font-weight:bold;color:red;font-size:6"><%= product.info_product.price %></span>
+							</div>
+						</div>
+						<a href="#" id="addClass"><span class="glyphicon glyphicon-comment btn-lg"></span> Open in chat </a>
+						<br>
+						<button type="submit" class="btn btn-large btn-danger" style="font-weight:bold;">MUA NGAY</button>
+						</div>
+					  </div>
+					</form>
+					</div>
+				</div>
+				</div>		 
+			</section>
+			<%- include list_product_suguest.ejs %>  
+			<%- include footer.ejs %>
+		</div>
+		<%- include picture_modal.ejs %>
+		<%- include modal_login.ejs %>
+</body>
+</html>

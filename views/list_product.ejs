@@ -1,0 +1,65 @@
+<section class="container padding-top-1x" style="background-color:white">
+<h3 class="text-center mb-30">Sản Phẩm</h3>
+<% if(products.length == 0){ %>
+	<div style="color:red" class="text-center">Không tìm thấy sản phẩm nào ! </div><br>
+<% }%> 
+<% products.forEach(function(product, index) { %>
+	<% if(index == 0){ %>
+		<div class="row">
+	<% } else{ %>  
+		<% if(index%2 == 0){ %>
+			</div>
+			<div class="row">
+		<% }%> 
+	<% } %>
+	<div class="col-md-6 col-sm-6">
+			<div class="card mb-30"><a class="card-img-tiles" href="product_details?productId=<%= product._id %>&type_main=<%= product.type.type_main %>&type=<%= product.type.type %>">
+			<div class="inner">
+				<div class="main-img"><img src="upload/<%= product.info_product.main_file %>" alt="Category"></div>
+				<div class="thumblist">
+				<% product.file.forEach(function(file, index) { %>
+					<img src="upload/<%= file.fileName %>" alt="Category">
+				<% }); %>
+				</div>
+            </div></a>
+			<div class="card-body text-center">
+                <h4 class="card-title" style="color:blue"><%= product.info_product.name %></h4>
+                <p class="money_format" style="color:red; font-weight:bold;" ><%= product.info_product.price %></p>
+                <a class="btn btn-outline-primary btn-sm" href="product_details?productId=<%= product._id %>&type_main=<%= product.type.type_main %>&type=<%= product.type.type %>">Xem Sản Phẩm</a>
+            </div>
+		</div>
+	</div>
+	<% if(index == (products.length -1)) { %>
+		</div>
+	<% }%> 
+<% }); %>
+</section>
+
+<div class="text-center">
+	<% if(list){ %>
+	   <ul class="pagination">
+		      <a href="/product_list?type_main=<%=type_main%>&type=<%=type%>&page=<%=prevPager%>" aria-label="Previous" class="<% if(prevPager == -1) { %>disabled<%}%>"">
+		        <span aria-hidden="true">&laquo; Pre</span>
+		      </a>
+			<% for(var i = 0; i < count; ++i) {%>
+		  		<a class="<% if(i == page) { %> active <%}%>" href="/product_list?type_main=<%=type_main%>&type=<%=type%>&page=<%=i%>" <% if(nextPager > count) { %>disabled<%}%>> <button> <%=i+1%> </button></a>
+		  	<% } %>
+		      <a href="/product_list?type_main=<%=type_main%>&type=<%=type%>&page=<%=nextPager%>" aria-label="Next" class="<% if(nextPager > count) { %>disabled<%}%>">
+		        <span aria-hidden="true">Next &raquo;</span>
+		      </a>
+	  	</ul>
+	 <% } else{ %>  
+	   <ul class="pagination">
+		      <a href="/?page=<%=prevPager%>" aria-label="Previous" class="<% if(prevPager == -1) { %>disabled<%}%>"">
+		        <span aria-hidden="true">&laquo; Pre</span>
+		      </a>
+			<% for(var i = 0; i < count; ++i) {%>
+		  		<a class="<% if(i == page) { %> active <%}%>" href="/?page=<%=i%>"> <button class="btn"> <%=i+1%> </button></a>
+		  	<% } %>
+		      <a href="/?page=<%=nextPager%>" aria-label="Next" class="<% if(nextPager > count) { %>disabled<%}%>">
+		        <span aria-hidden="true">Next &raquo;</span>
+		      </a>
+	  	</ul>
+	<% } %>
+	
+</div>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Wartec</title>
+ <link rel="stylesheet" href="themes/bootstrap/css/bootstrap.min.css">
+  <script src="themes/jquery/jquery.min.js"></script>
+  <script src="themes/bootstrap/js/bootstrap.min.js"></script>
+  <script src="themes/product/js/add_product.js" type="text/javascript"></script>
+</head>
+<body>
+<%- include wellcome.ejs %>
+<div class="row" style="min-height: 70vh;">
+  <div class="col-sm-4"></div>
+  <div class="col-sm-4">
+  <h3>ADD PRODUCT</h3>
+  	<form action="saveData" method="POST" role="form" enctype="multipart/form-data">
+
+		<div class="form-group">
+			<label>Loại thiết bị:</label>
+			<select class="form-control" id="type_main" name="type_main">
+				<% type_mains.forEach(function(type_main) { %>
+		            <option value="<%= type_main._id %>"><%= type_main.name %></option>
+				<% }); %>
+			</select>
+			<label>Loai:</label>
+			<select class="form-control" id="type" name="type">
+				<% types.forEach(function(type) { %>
+		            <option value="<%= type._id %>"><%= type.name %></option>
+				<% }); %>
+			</select>
+			<label>Name:</label>
+			<input type="text" class="form-control" name="name" id="name">
+			<label>Giá:</label>
+			<input type="text" class="form-control" name="price" id="price">
+			<label>Mô tả:</label>
+			<input type="text" class="form-control" name="description" id="description">
+			<label>Màu:</label>
+			<div id="color">
+				<input type="color" class="form-control" name="color" class="color">
+			</div>
+			<button id="add_color" class="btn btn-info" type="button">Add color</button><br>
+			<label>Thêm hình ảnh:</label>
+			<input type="file" class="form-control" name="multiFile" id="multiFile" multiple>
+		</div>
+		<button type="submit" class="btn btn-primary">saveData</button>
+	</form>
+  </div>
+  <div class="col-sm-4"></div>
+</div>
+</body>
+</html>
+

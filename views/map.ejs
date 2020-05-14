@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>MAP API</title>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #right-panel {
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+      }
+
+      #right-panel select, #right-panel input {
+        font-size: 15px;
+      }
+
+      #right-panel select {
+        width: 100%;
+      }
+
+      #right-panel i {
+        font-size: 12px;
+      }
+      #right-panel {
+        font-family: Arial, Helvetica, sans-serif;
+        position: absolute;
+        right: 5px;
+        top: 60%;
+        margin-top: -195px;
+        height: 330px;
+        width: 200px;
+        padding: 5px;
+        z-index: 5;
+        border: 1px solid #999;
+        background: #fff;
+      }
+      h2 {
+        font-size: 22px;
+        margin: 0 0 5px 0;
+      }
+      ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        height: 271px;
+        width: 200px;
+        overflow-y: scroll;
+      }
+      li {
+        background-color: #f1f1f1;
+        padding: 10px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+      li:nth-child(odd) {
+        background-color: #fcfcfc;
+      }
+      #more {
+        width: 100%;
+        margin: 5px 0 0 0;
+      }
+    </style>
+    <script>
+     var map;
+     var mapInfoArr = [];
+     var markerClick = null;
+     var circle = null;
+     var mapTmp;
+     $(document).ready(function(){
+		$("button[name='add']").click(function(){
+        	getAllLocation();
+    	});
+	  });
+      function initMap() {
+        // Create the map.
+        var pyrmont = {lat: 16.041758, lng: 108.222743};
+        var geocoder = new google.maps.Geocoder();
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: pyrmont,
+          zoom: 17
+        });
+        mapTmp = map;
+        google.maps.event.addListener(map, 'click', function(event) {
+            // clear marker
+            if(markerClick != null) {
+            	markerClick.setMap(null);
+            }
+   			placeMarker(event.latLng);
+		    $("input[name='lat']").val(event.latLng.lat());
+		    $("input[name='lng']").val(event.latLng.lng());
+		    var latlng = new google.maps.LatLng(event.latLng.lat(), event.latLng.lng());
+		    geocoder.geocode({
+			    latLng: latlng
+			 }, function(responses) {
+			    if (responses && responses.length > 0) {
+			        $("input[name='location']").val(responses[0].formatted_address);
+			    } else {
+			        $("input[name='location']").val('Cannot determine address at this location.');
+			    }
+		    });
+		});
+      }
+
+		function placeMarker(location) {
+		    var marker = new google.maps.Marker({
+		        position: location, 
+		        map: map
+		    });
+		    markerClick = marker;
+	    }
+      function createMarkers(places) {
+        var bounds = new google.maps.LatLngBounds();
+        for (var i = 0, place; place = places[i]; i++) {
+		  var mapInfo ={
+		  	icon : place.icon,
+		  	name : place.name,
+			lat : place.geometry.location.lat(),
+			lng : place.geometry.location.lng()
+		  };
+		  if (mapInfoArr.filter(e => e.lat == mapInfo.lat && e.lng == mapInfo.lng).length == 0) {
+		    mapInfoArr.push(mapInfo);
+		  }
+          var image = {
+            url: place.icon,
+            size: new google.maps.Size(71, 71),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(17, 34),
+            scaledSize: new google.maps.Size(25, 25)
+          };
+
+          var marker = new google.maps.Marker({
+            map: map,
+            icon: image,
+            title: place.name,
+            position: place.geometry.location
+          });
+          bounds.extend(place.geometry.location);
+        }
+        map.fitBounds(bounds);
+      }
+
+      function getAllLocation() {
+
+      	var service = new google.maps.places.PlacesService(map);
+      	var lat = parseFloat($("input[name='lat']").val());
+      	var lng = parseFloat($("input[name='lng']").val());
+        var pyrmont = {lat: lat, lng: lng};
+        var radius = parseFloat($("input[name='radius']").val());
+        var type = $("input[name='type']").val();
+
+		// Clear circle
+		if (circle != null) {
+			circle.setMap(null);  
+		}
+		// Create circle
+		circle = new google.maps.Circle({
+	        strokeColor: '#FF0000',
+	        strokeOpacity: 0.8,
+	        strokeWeight: 2,
+	        fillOpacity: 0.35,
+	        map: mapTmp,
+	        center: {lat: lat, lng: lng},
+	        radius: radius
+		});
+
+        // Perform a nearby search.
+        service.nearbySearch(
+            {location: pyrmont, radius: radius, keyword: [type]},
+            function(results, status, pagination) {
+              if (status !== 'OK') return;
+              createMarkers(results);
+              getNextPage = pagination.hasNextPage && function() {
+                pagination.nextPage();
+              };
+			  pagination.nextPage();
+			  if (!pagination.hasNextPage) {
+			  	saveData(type, mapInfoArr);
+			  }
+        });
+      }
+
+      function saveData(type, mapInfo) {
+      	$.ajax({
+	        type: 'POST',
+	        url: "/save_location_info",
+	        async: true,
+	        data:JSON.stringify({
+	                type: type,
+	                total: mapInfo.length,
+	                location: mapInfo
+	        }),
+	        dataType: 'json',
+	        contentType: 'application/json; charset=utf-8',
+	        success: function (data) {  
+	         	alert(data.info)
+	        },
+	        error: function (xhr, ajaxOptions, thrownError) { 
+	        	alert("error");
+	        	return false;
+	        }
+		});
+      }
+
+    </script>
+  </head>
+  <body>
+  <div class="row" style="background-color:lavenderblush;">
+    <div class="col-sm-1">
+	   <input type="text" class="form-control" name="type" placeholder="type">
+    </div>
+    <div class="col-sm-4">
+    	<div class="row">
+    		<div class="col-sm-11">
+		    	<input type="text" class="form-control" name="location" placeholder="location">
+		    	<input type="hidden" class="form-control" name="lat" value="">
+		    	<input type="hidden" class="form-control" name="lng" value="">
+	    	</div>
+	    	<div class="col-sm-1">
+		    	<button type="button" class="btn btn-info">
+      				<span class="glyphicon glyphicon-search"></span> 
+   				</button>
+	    	</div>
+    	</div>
+    </div>
+    <div class="col-sm-2">
+    	<input type="text" class="form-control" name="radius" placeholder="radius">
+    </div>
+    <div class="col-sm-1">
+    	<button type="button" class="btn btn-primary" name="add" >Add</button>
+    </div>
+  </div>
+    <div id="map"></div>
+    <div id="right-panel">
+      <h2>Results</h2>
+      <ul id="places"></ul>
+      <button id="more">More results</button>
+    </div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDD3rguKTyYaXNMp9_OLLja179QPdXzbR8&libraries=places&callback=initMap" async defer></script>
+  </body>
+</html>

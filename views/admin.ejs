@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Wartec</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	
+    <link href="themes/css/base.css" rel="stylesheet" media="screen"/>
+    <link href="themes/product/css/chat.css" rel="stylesheet" media="screen"/>
+<!-- Bootstrap style responsive -->	
+     <link rel="stylesheet" href="themes/bootstrap/css/bootstrap.min.css">
+	<link href="themes/css/bootstrap-responsive.min.css" rel="stylesheet"/>
+	<link href="themes/css/font-awesome.css" rel="stylesheet" type="text/css">
+<!-- Google-code-prettify -->	
+	<link href="themes/sweetalert/css/sweetalert.min.css" rel="stylesheet"/>
+	<link rel="stylesheet" media="screen" href="themes/product_template/css/vendor.min.css">
+    <link id="mainStyles" rel="stylesheet" media="screen" href="themes/product_template/css/styles.min.css">
+    <link rel="stylesheet" media="screen" href="themes/product_template/customizer/customizer.min.css">
+<!-- fav and touch icons -->
+    <link rel="shortcut icon" href="themes/img/logo.gif">
+ 	<script src="themes/jquery/jquery.min.js"></script>
+ 	<script src="themes/bootstrap/js/bootstrap.min.js"></script>
+    <script src="themes/product/js/admin.js"></script>
+    <script src="themes/product/js/add_product.js" type="text/javascript"></script>
+    <script src="themes/sweetalert/js/sweetalert.min.js" type="text/javascript"></script>
+    <script src="themes/sweetalert/js/sweetalert.min.js" type="text/javascript"></script>
+    <script src="themes/product_template/js/modernizr.min.js"></script>
+
+	<style type="text/css">
+		button.setting {
+		    background-color: #4CAF50;
+		    color: white;
+		    padding: 5px 10px;
+		    border: none;
+		    cursor: pointer;
+		    width: 100%;
+		    text-align: left;
+		}
+
+		table.table-striped{
+		    border:1px solid black;
+		}
+		table.table-striped > thead > tr > th{
+		    border:1px solid black;
+		    color: blue;
+		    background-color: goldenrod;
+		    text-align: center;
+		}
+		table.table-striped > tbody > tr > td{
+		    border:1px solid black;
+		}
+		#map {
+			height:800px;
+			border-radius: 10px;
+			border: 1px solid black;
+		}
+
+		.loader {
+			border: 16px solid #f3f3f3;
+			border-radius: 50%;
+			border-top: 16px solid #3498db;
+			width: 120px;
+			height: 120px;
+			-webkit-animation: spin 2s linear infinite; /* Safari */
+			animation: spin 2s linear infinite;
+		}
+
+		/* Safari */
+		@-webkit-keyframes spin {
+			0% { -webkit-transform: rotate(0deg); }
+			100% { -webkit-transform: rotate(360deg); }
+		}
+
+		@keyframes spin {
+			0% { transform: rotate(0deg); }
+			100% { transform: rotate(360deg); }
+		}
+
+		#scrollarea {
+			overflow-y: scroll;
+			height: 800px;
+		}
+	</style>
+  </head>
+<body>
+	<nav class="navbar navbar-default">
+	  <div class="container-fluid" style="background-color: #c9d35e;">
+	    <div class="navbar-header">
+	      <a class="navbar-brand" href="/">
+	      	<img src="themes/img/logo.gif" style="height:50px; width:50px">
+	      </a>
+	    </div>
+	    <ul class="text-center">
+	    	<br>
+	    	<h2>ADMIN SETTING</h2>
+	    </ul>
+	  </div>
+	</nav>
+	<div class="offcanvas-wrapper">
+	<section class="padding-top-1x" style="background-color: beige;">
+		<div class="row">
+			<div class="col-md-3 card col-sm-3 text-center" style="background-color: beige;">
+				<div style="">
+					<h4><span class="glyphicon glyphicon-cog btn-lg"></span>Cài đặt website</h4>
+	            </div>
+	            <div>
+	            	<table class="table" style="background: beige;">
+				    <thead>
+				      <tr>
+				        <th></th>
+				      </tr>
+				    </thead>
+				    <tbody class="">
+				      <tr>
+				        <td><button class="setting button type"><span class="glyphicon glyphicon-tags btn-lg"> Loại Sản Phẩm</span> </button></td>
+				      </tr>
+				      <tr>
+				        <td><button class="setting button product"><span class="glyphicon glyphicon-tags btn-lg"> Sản phẩm</span> </button></td>
+				      </tr>
+				      <tr>
+				        <td><button class="setting button product_booking"><span class="glyphicon glyphicon-th-list btn-lg"> Đơn hàng</span> </button></td>
+				      </tr>
+				      <tr>
+				        <td><button class="setting button user"><span class="glyphicon glyphicon-user btn-lg"> Users</span> </button></td>
+				      </tr>
+				      <tr>
+				        <td><button class="setting button"><span class="glyphicon glyphicon-user btn-lg"> Profile</span> </button></td>
+				      </tr>
+				    </tbody>
+				  </table>
+	            </div>
+			</div>
+			<div class="col-md-8 card col-sm-8" style="" id="scrollarea">
+				<div class="btn-add" style="display:none;">
+					<button class="btn btn-success add" data-toggle="modal" data-target=""><span class="glyphicon glyphicon-plus"></span> Thêm</button>
+				</div>
+				<br/>
+				<div class="map" id="map_setting" style="display:none;">
+					<div class="form-group">
+						<b>Vị trí bắt đầu:</b>
+						<input type="text" class="form-control" placeholder="" value="138/45 Hoàng Văn Thái, quận Liên Chiểu, TP Đà Nẵng" name="map_start">
+					</div>
+					<span class="glyphicon glyphicon-circle-arrow-right"></span>
+					<div class="form-group">
+						<b>Vị trị kết thúc:</b>
+						<input type="text" class="form-control" value="138/45 Hoàng Văn Thái, quận Liên Chiểu, TP Đà Nẵng" placeholder="Vị trị kết thúc" name="map_end">
+					</div>
+					<button type="button" class="btn btn-info" id="view_map"><span class="glyphicon glyphicon-map-marker"></span> Xem MAP Giao Hàng</button>
+					<br>
+					<div id="map" style="display:none;"></div>
+				</div>
+				<br>
+				<script>
+					var mapTmp;
+					function initMap() {
+						var directionsService = new google.maps.DirectionsService;
+						var directionsDisplay = new google.maps.DirectionsRenderer;
+						var map = new google.maps.Map(document.getElementById('map'), {
+						  zoom: 15,
+						  center: {lat: 16.041758, lng: 108.222743}
+						});
+						mapTmp = map;
+						directionsDisplay.setMap(map);
+
+						document.getElementById('view_map').addEventListener('click', function() {
+						  if($('input.map_point:checkbox:checked').length == 0) {
+						  	swal({
+							 title: "Thông báo",
+							 text: "Vui lòng chọn đơn hàng để xem Map giao hàng !",
+							 type: "error",
+							 confirmButtonText: "close"
+							}); 
+						  } else {
+						  	$("div.map").append('<div class="loader"></div>');
+						    calculateAndDisplayRoute(directionsService, directionsDisplay);
+						    $("div.loader").hide();
+						    $("div#map").show();
+						  }
+						});
+					}
+
+					function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+						var waypts = [];
+						$("input.map_point").each(function(){
+							if($(this).prop("checked")) {
+					            waypts.push({
+							        location: $(this).val(),
+							        stopover: true
+							    });
+					        }
+						});
+
+						directionsService.route({
+						  origin: $('input[name="map_start"]').val(),
+						  destination: $('input[name="map_end"]').val(),
+						  waypoints: waypts,
+						  optimizeWaypoints: true,
+						  travelMode: 'DRIVING'
+						}, function(response, status) {
+						  if (status === 'OK') {
+						    directionsDisplay.setDirections(response);
+						    var route = response.routes[0];
+						    for (var i = 0; i < route.legs.length; i++) {
+						       var marker = new google.maps.Marker({
+									map: mapTmp,
+									title: route.legs[i].end_address,
+									position: route.legs[i].end_location
+								});
+						        var infowindow = new google.maps.InfoWindow();
+						       	var html = "<label>Vị trí bắt đầu: </label> " + route.legs[i].start_address + "<br/>";
+						       	html += "<label>Vị trí kết thúc: </label> " + route.legs[i].end_address + "<br/>";
+						       	html += "<label>Khoảng cách: </label> " + route.legs[i].distance.text + "<br/>";
+						       	html += "<label>Thời gian: </label> " + route.legs[i].duration.text+ "<br/>";
+						        infowindow.setContent(html);
+                        		infowindow.open(map, marker, html);
+						    }
+						  } else {
+						    window.alert('Directions request failed due to ' + status);
+						  }
+						});
+					}
+				</script>
+				<script async defer
+				src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAC3c6i8wuFkUaSALa_MjczTJRWegcZvVc&callback=initMap">
+				</script>
+				<div class="data">
+					
+				</div>
+			</div>
+		</div>
+		</section>
+	</div>
+	<!-- The Modal -->
+	  <div class="modal fade" id="modalProduct">
+	    <div class="modal-dialog modal-lg">
+	      <div class="modal-content">
+	      
+	        <!-- Modal Header -->
+	        <div class="modal-header">
+	          <h4 class="modal-title">Thêm sản phẩm</h4>
+	          <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        </div>
+	        
+	        <!-- Modal body -->
+	        <div class="modal-body">
+	          <form action="add_new_product" method="POST" role="form" enctype="multipart/form-data">
+
+				<div class="form-group">
+					<label>Loại thiết bị:</label>
+					<select class="form-control" id="type_main" name="type_main">
+						<% type_mains.forEach(function(type_main) { %>
+				            <option value="<%= type_main._id %>"><%= type_main.name %></option>
+						<% }); %>
+					</select>
+					<label>Loai:</label>
+					<select class="form-control" id="type" name="type">
+						<% types.forEach(function(type) { %>
+				            <option value="<%= type._id %>"><%= type.name %></option>
+						<% }); %>
+					</select>
+					<label>Name:</label>
+					<input type="text" class="form-control" name="name" id="name">
+					<label>Giá:</label>
+					<input type="number" class="form-control" name="price" id="price">
+					<label>Mô tả:</label>
+					<input type="text" class="form-control" name="description" id="description">
+					<label>Thêm hình ảnh:</label>
+					<input type="file" class="form-control" name="multiFile" id="multiFile" multiple>
+				</div>
+				<button type="submit" class="btn btn-primary">saveData</button>
+			  </form>
+	        </div>
+	        
+	        <!-- Modal footer -->
+	        <div class="modal-footer">
+	          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	        </div>
+	        
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="modal fade" id="modalProductEdit">
+	    <div class="modal-dialog modal-lg">
+	      <div class="modal-content">
+	      
+	        <!-- Modal Header -->
+	        <div class="modal-header">
+	          <h4 class="modal-title">Sửa sản phẩm</h4>
+	          <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        </div>
+	        
+	        <!-- Modal body -->
+	        <div class="modal-body">
+	          <form action="add_new_product" method="POST" role="form" enctype="multipart/form-data">
+
+				<div class="form-group">
+					<input type="hidden" name="product_id" value="">
+					<label>Loại thiết bị:</label>
+					<select class="form-control" name="type_main">
+						
+					</select>
+					<label>Loai:</label>
+					<select class="form-control" name="type">
+
+					</select>
+					<label>Name:</label>
+					<input type="text" class="form-control" name="name">
+					<label>Giá:</label>
+					<input type="number" class="form-control" name="price">
+					<label>Mô tả:</label>
+					<input type="text" class="form-control" name="description">
+					<label>Thêm hình ảnh:</label>
+					<input type="file" class="form-control" name="multiFile" id="multiFile" multiple>
+				</div>
+				<button type="submit" class="btn btn-primary">saveData</button>
+			  </form>
+	        </div>
+	        
+	        <!-- Modal footer -->
+	        <div class="modal-footer">
+	          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	        </div>
+	        
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="modal fade" id="add_type_main_modal">
+	    <div class="modal-dialog modal-lg">
+	      <div class="modal-content">
+	      
+	        <!-- Modal Header -->
+	        <div class="modal-header">
+	          <h4 class="modal-title">Thêm Dòng Sản Phẩm:</h4>
+	          <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        </div>
+	        
+	        <!-- Modal body -->
+	        <div class="modal-body">
+				<div class="form-group">
+					<label>Tên Dòng Sản Phẩm:</label>
+					<input type="text" class="form-control" name="type_main_name">
+				</div>
+				<button type="button" class="btn btn-primary save_type_main">Save</button>
+	        </div>
+	        
+	        <!-- Modal footer -->
+	        <div class="modal-footer">
+	          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	        </div>
+	        
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="modal fade" id="add_type_modal">
+	    <div class="modal-dialog modal-lg">
+	      <div class="modal-content">
+	      
+	        <!-- Modal Header -->
+	        <div class="modal-header">
+	          <h4 class="modal-title">Thêm Loại Sản Phẩm:</h4>
+	          <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        </div>
+	        
+	        <!-- Modal body -->
+	        <div class="modal-body">
+				<div class="form-group">
+					<label>Tên Loại Sản Phẩm:</label>
+					<input type="text" class="form-control" name="type_name">
+					<input type="hidden" class="form-control" name="type_main_id">
+				</div>
+				<button type="button" class="btn btn-primary save_type">Save</button>
+	        </div>
+	        
+	        <!-- Modal footer -->
+	        <div class="modal-footer">
+	          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	        </div>
+	        
+	      </div>
+	    </div>
+	  </div>
+
+	   <div class="modal fade" id="deliveryUpdate" role="dialog">
+	    <div class="modal-dialog modal-sm">
+	      <div class="modal-content">
+	        <div class="modal-header">
+	          <button type="button" class="close" data-dismiss="modal">&times;</button>
+	          <h4 class="modal-title">Tình trạng đơn hàng</h4>
+	        </div>
+	        <div class="modal-body text-center">
+	            <button href="#" class="btn btn-success btn-lg delivery_success">
+		          <span class="glyphicon glyphicon-check"></span> Đã giao hàng
+		        </button>
+		        <input type="hidden" name="product_booking_id">
+	        </div>
+	        <div class="modal-footer">
+	          <button type="button" class="btn btn-default close_delivery_modal" data-dismiss="modal">Close</button>
+	        </div>
+	      </div>
+	    </div>
+	  </div>
+
+	<%- include footer.ejs %>
+	<script src="themes/js/jquery.js" type="text/javascript"></script>
+</body>
+</html>

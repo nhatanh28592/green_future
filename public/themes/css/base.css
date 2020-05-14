@@ -1,0 +1,305 @@
+.carousel-inner.onebyone-carosel { margin: auto; width: 90%; }
+.onebyone-carosel .active.left { left: -33.33%; }
+.onebyone-carosel .active.right { left: 33.33%; }
+.onebyone-carosel .next { left: 33.33%; }
+.onebyone-carosel .prev { left: -33.33%; }
+#mainBody {/* background: url(../images/seperator.png) repeat-x 0 0; */ border-top:2px solid #dedede; padding-top: 18px;
+	background: red;
+    background: -webkit-linear-gradient( #9baab7, violet);
+    background: -o-linear-gradient( #1E90FF, violet);
+    background: -moz-linear-gradient( #1E90FF, violet);
+    background: linear-gradient( #dbecd4, #bf9cbf);
+}
+.disabled {
+    pointer-events:none; //This makes it not clickable
+    opacity:0.6;         //This grays it out to look disabled
+}
+#carouselBlk,#header{background: url(../images/headerRepeat.png) repeat-x 0 0 #f7f7f7;}
+#srchFld {background: url(../images/search.png) no-repeat 4px center #fff;}
+.tag {background:url(../images/new.png) no-repeat 0 0; position: absolute; display:block; top: -4px;right: -18px; height:48px; width:48px;}
+.clr{clear:both;}
+.cntr{text-align:center}
+.marginLess{margin:0}
+#logoArea, #logoArea a{line-height:49px;}
+#logoArea .btn, #logoArea .btn-group {margin-top: 0;}
+#logo {padding-right:28px;}
+#welcomeLine{padding: 8px 0 4px}
+/* Sidebar--------- */
+#myCart  img{float:left; margin-right:8px; }
+#myCart .badge {padding: 9px;}
+#myCart {font-size: 13px;font-weight: bold; line-height: 33px;}
+#sidebar ul ul li a{ font-size:12px;}
+#sidebar ul {list-style: none;padding: 0;margin: 0;width: 100%;}
+#sidebar  li  a{font-weight:bold; background:url(../images/tabRepeatInactive.png) repeat-x 0 0; color:#262626;}
+#sidebar ul li li a{background:#eee; padding-left:14px;font-weight:normal;display:block;   font-size:13px; line-height:26px;}
+/* body--- */
+.thumbnail>a{display:block; text-align:center}
+.thumbnail h5,.thumbnail p{text-align:center}
+/* Product page--- */
+.alignR{text-align:right;}
+.control-label.alignL, .alignL{text-align:left;}
+.loginFrm{ margin-bottom:8px;}
+.loginFrm .control-group{padding:8px 14px 0; margin-bottom:0 }
+/* Compair product page */
+.checkbox input[type="checkbox"]{ margin:4px 0 8px -20px }
+#sm{text-align:right}
+#sm a {margin: 4px;width:32px;}
+/* Carousel  */
+#myCarousel{text-align:center; margin-bottom:0}
+#myCarousel .btn{position:absolute; bottom:10%; right:17%; padding:2% 6%; z-index:9999}
+#myCarousel .carousel-caption{display:none;}
+#myCarousel.homCar .item img{width:100%; max-height:506px}
+#productView .btn-toolbar{padding-left:3px;}
+#productDetail > li, .nav-pills > li {float: right;}
+#myTabContent{text-align:justify}
+#compairTbl td{text-align:center;}
+#accordion2, #legalNotice, .justify, #mainCol{text-align:justify}
+#myCarousel .carousel-control{display:none}
+#myCarousel:hover .carousel-control{display:block}
+.navbar .nav > .active > a, .navbar .nav > .active > a:hover, .navbar .nav > .active > a:focus {color:#fff; background-color: #CF0007;text-shadow: none;}
+/* Footer section--------------- */
+#footerSection {background: #202020;color: black;padding: 28px 0 44px;margin-top: 20px;border-top: 1px solid #444;}
+#footerSection a{color:#ccc; font-size:11px; padding:0; line-height:24px; display:block; }
+#footerSection a:hover{color:#fff;  }
+#footerSection  #socialMedia a{ min-width:25px; display:inline; margin-right:6px; text-align:center; line-height:1.5em;}
+#socialMedia img{max-width:60px;}
+#footerSection  #socialMedia a:hover{background:none;}
+/* ===================================================== */
+/* Light Box------------------- */
+#jquery-overlay {position: absolute;top: 0;left: 0;z-index: 90;width: 100%;height: 500px;}
+#jquery-lightbox {position: absolute;top: 0;left: 0;width: 100%;z-index: 100;text-align: center;line-height: 0;}
+#jquery-lightbox a img { border: none; }#lightbox-container-image-box {position: relative;background-color: #fff;width: 250px;height: 250px;margin: 0 auto;}
+#lightbox-container-image { padding: 10px; }#lightbox-loading {position: absolute;top: 40%;left: 0%;height: 25%;width: 100%;text-align: center;line-height: 0;}
+#lightbox-nav {	position: absolute;top: 0;left: 0;height: 100%;width: 100%;z-index: 10;}#lightbox-container-image-box > #lightbox-nav { left: 0; }#lightbox-nav a { outline: none;}
+#lightbox-nav-btnPrev, #lightbox-nav-btnNext {width: 49%;height: 100%;zoom: 1;display: block;}
+#lightbox-nav-btnPrev { left: 0; float: left;}#lightbox-nav-btnNext { right: 0; float: right;}
+#lightbox-container-image-data-box {font: 10px Verdana, Helvetica, sans-serif;background-color: #fff;margin: 0 auto;line-height: 1.4em;overflow: auto;width: 100%;padding: 0 10px 0;}
+#lightbox-container-image-data {	padding: 0 10px; 	color: #666; }
+#lightbox-container-image-data #lightbox-image-details {width: 70%; float: left; text-align: left; }	
+#lightbox-image-details-caption { font-weight: bold; }#lightbox-image-details-currentNumber {display: block; clear: left; padding-bottom: 1.0em;}
+#lightbox-secNav-btnClose {width: 66px; float: right;padding-bottom: 0.7em;	}
+/* ------------------------------- */
+.navbar-search .srchTxt {border-radius: 0;border: 1px solid #444;}
+[class^="icon-"], [class*=" icon-"] {background-image: none;}
+.navbar .nav > li > a {padding:10px;color: #DDD;text-shadow: none;font-size: 16px;}
+.navbar .nav > li > a:hover{color:#fff}
+#logoArea, #logoArea a{outline:none;}
+.alignR .checkbox input[type="checkbox"] {float: right;margin: 4px 0 8px 11px;}
+
+.navbar .nav.pull-right, #sideManu {overflow:hidden;}
+#logoArea  #smallScreen {margin: 21px 14px 0 0;}
+.navbar-search {margin-top: 8px;}
+/* Responsive--------------------- */
+/* Large desktop */
+@media (min-width: 1200px) {  }
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 979px) {
+.navbar .brand {float: none;text-align: center;}
+#sideManu,#topMenu{height:0}
+.navbar-search {margin-top: 8px;width: 100%;float: none;}
+#topMenu{height: auto;float: none;}
+#topMenu li{float: none;}
+.navbar .nav > li > a {border-top:1px solid #666; padding:0}
+#sideManu,#topMenu{height:0}
+}
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) {
+.navbar .brand {float: none;text-align: center;}
+#header, #carouselBlk{margin: 0 -20px;}
+#sideManu,#topMenu{height:0}
+.navbar-search {margin-top: 8px;width: 100%;float: none;}
+#topMenu{height: auto;float: none;}
+#topMenu li{float: none;}
+.navbar .nav > li > a {border-top:1px solid #666; padding:0}
+ }
+/* Landscape phones and down */
+@media (max-width: 480px) {
+#header, #carouselBlk{margin: 0 -20px;}
+#sideManu, #topMenu{height:0}
+#topMenu{height: auto;float: none;}
+#topMenu li{float: none;}
+.navbar .nav > li > a {border-top:1px solid #666; padding:0}
+}
+#modal_login {font-family: Arial, Helvetica, sans-serif;}
+
+/* Full-width input fields */
+input.user_name, input[type=password] {
+    width: 100%;
+    padding: 8px 15px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+/* Set a style for all buttons */
+button.btn_login {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+button.btn_login:hover {
+    opacity: 0.8;
+}
+
+/* Extra styles for the cancel button */
+.cancelbtn {
+    width: auto;
+    padding: 10px 18px;
+    background-color: #f44336;
+}
+
+/* Center the image and position the close button */
+.imgcontainer {
+    text-align: center;
+    margin: 0 0 1px 0;
+    position: relative;
+}
+
+img.avatar {
+    width: 40%;
+    border-radius: 50%;
+}
+
+.container_login {
+    padding: 16px;
+}
+
+span.psw {
+    float: right;
+    padding-top: 16px;
+}
+
+/* The Modal (background) */
+.modal_login {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    padding-top: 60px;
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button (x) */
+.close {
+    position: absolute;
+    right: 25px;
+    top: 0;
+    color: #000;
+    font-size: 35px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: red;
+    cursor: pointer;
+}
+
+/* Add Zoom Animation */
+.animate {
+    -webkit-animation: animatezoom 0.6s;
+    animation: animatezoom 0.6s
+}
+
+@-webkit-keyframes animatezoom {
+    from {-webkit-transform: scale(0)} 
+    to {-webkit-transform: scale(1)}
+}
+    
+@keyframes animatezoom {
+    from {transform: scale(0)} 
+    to {transform: scale(1)}
+}
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 200px) {
+    span.psw {
+       display: block;
+       float: none;
+    }
+    .cancelbtn {
+       width: 100%;
+    }
+}
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+#custom-search-input{
+    border: solid 1px #E4E4E4;
+    border-radius: 6px;
+    background-color: #fff;
+}
+
+#custom-search-input input{
+    border: 0;
+    box-shadow: none;
+}
+
+#custom-search-input button{
+    margin: 2px 0 0 0;
+    background: none;
+    box-shadow: none;
+    border: 0;
+    color: #666666;
+    padding: 0 8px 0 10px;
+    border-left: solid 1px #ccc;
+}
+
+#custom-search-input button:hover{
+    border: 0;
+    box-shadow: none;
+    border-left: solid 1px #ccc;
+}
+
+#custom-search-input .glyphicon-search{
+    font-size: 23px;
+}
+
+/*ROUNDED CORNER*/
+*{
+  -webkit-border-radius: 0 !important;
+     -moz-border-radius: 0 !important;
+          border-radius: 0 !important;
+}
+/*CATEGORIES BADGE*/
+.badge {
+    font-weight: 600;
+    font-size: 13px;
+    color: white;
+    background-color: #289dcc;
+}
+/*FEATURED*/
+.mg-2, .mg-4{
+    margin-left:-20px;
+}
+.linkfeat{
+    background: rgba(76,76,76,0);
+    background: -moz-linear-gradient(top, rgba(76,76,76,0) 0%, rgba(48,48,48,0) 49%, rgba(19,19,19,1) 100%);
+    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(76,76,76,0)), color-stop(49%, rgba(48,48,48,0)), color-stop(100%, rgba(19,19,19,1)));
+    background: -webkit-linear-gradient(top, rgba(76,76,76,0) 0%, rgba(48,48,48,0) 49%, rgba(19,19,19,1) 100%);
+    background: -o-linear-gradient(top, rgba(76,76,76,0) 0%, rgba(48,48,48,0) 49%, rgba(19,19,19,1) 100%);
+    background: -ms-linear-gradient(top, rgba(76,76,76,0) 0%, rgba(48,48,48,0) 49%, rgba(19,19,19,1) 100%);
+    background: linear-gradient(to bottom, rgba(76,76,76,0) 0%, rgba(48,48,48,0) 49%, rgba(19,19,19,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4c4c4c', endColorstr='#131313', GradientType=0 );
+}

@@ -1,0 +1,151 @@
+<div class="offcanvas-container" id="shop-categories">
+
+    </div>
+    <!-- Topbar-->
+    <div class="topbar">
+      <div class="topbar-column"><a class="hidden-md-down" href="mailto:greenfuturevn@gmail.com"><i class="icon-mail"></i>&nbsp; greenfuturevn@gmail.com</a><a class="hidden-md-down" href="tel:0986399409"><i class="icon-bell"></i>&nbsp; 0986.399.409</a><a class="social-button sb-facebook shape-none sb-dark" href="#" target="_blank"><i class="socicon-facebook"></i></a><a class="social-button sb-twitter shape-none sb-dark" href="#" target="_blank"><i class="socicon-twitter"></i></a><a class="social-button sb-instagram shape-none sb-dark" href="#" target="_blank"><i class="socicon-instagram"></i></a><a class="social-button sb-pinterest shape-none sb-dark" href="#" target="_blank"><i class="socicon-pinterest"></i></a>
+      </div>
+    </div>
+    <header class="navbar navbar-sticky navbar-stuck" style="background-image: linear-gradient(90deg,#005212 50%,#30850d 87%,#1ab71f 100%);">
+      <!-- Search-->
+      <div class="site-search text-center" method="">
+        <input type="text" name="search" placeholder="Tìm kiếm sản phẩm ...">
+        <div class="search-tools"><span class="clear-search" style="color:white">Clear</span><span class="close-search" style="color:white"><i class="icon-cross"></i></span></div>
+      </div>
+      <div class="site-branding">
+        <div class="inner">
+          <a class="site-logo" href="/"><img src="themes/img/logo.gif" alt="Wartec" style="width:50px;height:50px"></a>
+        </div>
+      </div>
+      <!-- Main Navigation-->
+      <nav class="site-menu">
+        <ul>
+          <li class="has-megamenu active"><a href="/"><span>Home</span></a>
+          </li>
+          <% types.forEach(function(type) { %>
+		      <li><a><span style="color:white;font-weight:bold"><%= type.name %></span></a>
+		        <ul class="sub-menu">
+		        	<% type.type_info.forEach(function(data) { %>
+						<li><a href="/product_list?type_main=<%= type._id %>&type=<%= data._id %>"><%= data.name %></a></li>
+		         	<% }); %>
+		        </ul>
+		      </li>
+		  <% }); %>
+          </ul>
+          </li>
+        </ul>
+      </nav>
+      <!-- Toolbar-->
+      <div class="toolbar">
+        <div class="inner">
+          <div class="tools">
+            <div class="search" style="background-color: yellowgreen;"><i class="icon-search"></i></div>
+			
+			<div class="account" style="background-color: beige;"><a></a><i class="icon-head"></i>
+			<ul class="toolbar-dropdown">
+				<li class="sub-menu-user">
+			<% if(user){ %>
+				<input type="hidden" name="user" value="<%= user.user_name %>">
+				<% if(user.facebook_id){ %>
+					<input type="hidden" name="key" value="<%= user.facebook_id %>">
+					<input type="hidden" name="url_picture_user" value="http://graph.facebook.com/<%= user.facebook_id %>/picture?type=normal">
+					<div class="user-ava"><img src="http://graph.facebook.com/<%= user.facebook_id %>/picture?type=normal" alt="<%= user.user_name %>"></div>
+				<% } else { %>
+					<input type="hidden" name="url_picture_user" value="<%= user.picture %>">
+					<div class="user-ava"><img src="<%= user.picture %>" alt="<%= user.user_name %>"></div>
+					<% if(user.google_id){ %>
+						<input type="hidden" name="key" value="<%= user.google_id %>">
+					<% } else { %>
+						<input type="hidden" name="key" value="<%= user.user_name %>">
+					<% } %>
+				<% } %>
+				  <li class="sub-menu-separator"></li>
+				  <div class="user-info">
+					<h6 class="user-name"><%= user.user_name %></h6>
+				  </div>
+				</li>
+				  <li><a href="/">My Profile</a></li>
+				<li class="sub-menu-separator"></li>
+				<li><a href="/logout"> <i class="icon-unlock"></i>Logout</a></li>
+			<% } else{ %>
+			<li name="login" data-toggle="modal" data-target="#modal_login"><i class="icon-unlock"></i>Login</li>
+		  <% } %>
+				</ul>
+			</div>
+			<% if(user){ %>
+				<% if(user.role == 'admin'){ %>
+					<div class="account"><a href="/admin_setting"></a><i class="icon-cog"></i>
+				</div>
+				<% } %>
+			<% } %>
+					  
+            <div style="background-color: darkgray;"class="cart <% if(product_booking_data.total_product != 0) { %> cart_enable<%}%>"><a href="buy_now" class="link_cart <% if(product_booking_data.total_product == 0) { %> disabled<%}%>"></a><i class="icon-bag"></i><span class="count" style="font-size:20px;color:red"><%= product_booking_data.total_product %></span><span class="subtotal money_format" style="color:red"><%= product_booking_data.total_price %></span>
+              <div class="toolbar-dropdown">
+              <% product_booking_data.product_booking.forEach(function(product) { %>
+                <% product.product_info.forEach(function(info, index) { %>
+                  <div class="dropdown-product-item">
+                  <span class="dropdown-product-remove">
+                    <i class="icon-cross"></i>
+                  </span>
+                  <input type="hidden" name="id" value="<%= index %>">
+                  <a class="dropdown-product-thumb" href="buy_now">
+                  <img src="upload/<%= info.main_file %>" alt="Product"></a>
+                    <div class="dropdown-product-info"><a class="dropdown-product-title" href="buy_now"><%= info.name %></a>
+                      <span class="dropdown-product-details"><%= info.number %> x <span class="money_format" style="color:red"><%= info.price %></span></span>
+                    </div>
+                  </div>
+                <% }); %>
+              <% }); %>
+                <div class="toolbar-dropdown-group">
+                  <div class="column"><span class="text-lg">Tổng cộng:</span></div>
+                  <div class="column text-right"><span class="text-lg text-medium money_format" style="color:red"><%= product_booking_data.total_price %></span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="offcanvas-wrapper">
+    <section class="hero-slider" style="background-image: url(themes/img/main-bg.jpg);">
+        <div class="owl-stage-outer"><div class="owl-stage" style="transform:translate3d(-3806px, 0px, 0px);transition: all 0.45s ease 0s;width:13321px;display:contents;">
+        <div class="owl-item active" style="width: 1903px;"><div class="item">
+            <div class="padding-top-2x">
+              <div class="row">
+                <div class="col-lg-2 col-md-2 padding-bottom-2x text-md-right text-center">
+                  <img src="themes/img/logo-lg.png" alt="Wartec" style="width:100px;height:100px;border:solid green;">
+                </div>
+                <div class="col-lg-6 col-md-6 padding-bottom-2x text-md-left text-center">
+                  <div class="from-bottom">
+                    <div class="h3 text-bold text-normal mb-2 pt-1" style="color:green">GREEN FUTURE VN
+                      <a class="call" href="tel:0986399409" title="gọi ngay">
+                        <span class="icon fa fa-1x fa-phone text-white rounded-circle text-center" style="transform: rotate(0deg);background-color:green;padding:2px 5px"></span>
+                        <span class="number d-none d-lg-inline-block">0986.399.409</span>
+                      </a>
+                    </div>
+                    <ul class="">
+                      <br>
+                      <p>Green Future Việt Nam là công ty sản xuất ống hút cỏ từ năm 2018. 
+                      Sản phẩm của chúng tôi đã có mặt tại các thị trường lớn như: Anh
+                      , Mỹ, Đức, Úc, Phần Lan, Canada, Nhật Bản, Hàn Quốc, Thái Lan,
+                       Hong Kong…</p>
+                      <p>Với tầm nhìn “Đừng đợi thay đổi, hãy là người thay đổi” Green Future
+                       mong muốn tạo ra một xu hướng sữ dụng các loại ống hút tự nhiên 
+                      thay thế cho ống hút nhựa. Thông qua đó, khách hàng sẽ đóng góp vào
+                       việc giảm thiểu tác động của ống hút nhựa và rác thải nhựa ra môi trường,
+                       đặt biệt là các kênh rạch và các đại dương.</p>
+                      <p>Chúng tôi đặt niềm hy vọng một “tương lai xanh” vào mỗi ống hút
+                       cỏ được sản xuất và mong rằng người sữ dụng sản phẩm của chúng
+                       tôi có thể góp phần bảo vệ môi trường và tạo ra một tương lai xanh 
+                      cho những thế hệ sau này.</p>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+          </div>
+          </div>
+      </section>
+      </div>

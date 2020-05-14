@@ -1,0 +1,42 @@
+  <div class="modal fade" id="modal_login" role="dialog">
+    <div class="modal-dialog">
+    
+      <div class="modal-content">
+        <div class="modal-body">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <form class="animate" method="POST" action="/login">
+            <div class="imgcontainer">
+              <img src="themes/images/icon_user.png">
+            </div>
+
+            <div class="container_login">
+              <div class="">
+              <a href="/auth/google" class="btn btn-danger btn-md" role="button"><span class="glyphicon glyphicon-user"></span> Sign in with Google</a><br>
+              <a href="/auth/facebook" class="btn btn-primary btn-md" role="button"><span class="glyphicon glyphicon-user"></span> Sign in with Facebook</a>
+              </div>
+              <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#login_form">Login Form</button>
+              <br>
+              <br>
+              <div class="collapse" id="login_form" style="border:1px solid;border-radius: 10px;">
+              <br>
+              <div class="input-group input-light collapse" id="login_form">
+                    <input class="form-control" type="email" name="username" placeholder="Email" style="background-color:#606975">
+                    <span class="input-group-addon"><i class="icon-mail"></i></span>
+              </div>
+              <br>
+              <div class="input-group input-light collapse" id="login_form">
+                    <input class="form-control" type="password" name="password" placeholder="Password" style="background-color:#606975">
+                    <span class="input-group-addon"><i class="icon-lock"></i></span>
+              </div>
+              <button type="submit" class="btn btn-outline-primary btn-sm">Login</button>
+            </div>
+            <br>
+            <div class="container_login" style="background-color:#f1f1f1">
+              <button type="button" class="btn cancelbtn" data-dismiss="modal">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      
+    </div>
+  </div>

@@ -1,0 +1,35 @@
+  <div class="modal fade" id="modal_singup" role="dialog">
+    <div class="modal-dialog">
+    
+      <div class="modal-content">
+        <div class="modal-body">
+          <button type="button" class="close" data-toggle="modal" data-dismiss="modal" data-target="#modal_login">&times;</button>
+          <form class="animate" id="form_singup" method="POST" action="/local-reg">
+            <div class="imgcontainer">
+              <img src="themes/images/icon_user.png">
+            </div>
+
+            <div class="container_login">
+              <div class="SingUp">
+              </div>
+              <br>
+              <label for="uname"><b>Email</b></label>
+              <input type="email" class="user_name" placeholder="Enter Email" name="username" required>
+
+              <label for="psw"><b>Password</b></label>
+              <input type="password" placeholder="Enter Password" name="password" class="password" required>
+              <div class="alert alert-danger error_sing_up" style="display:none">
+			    
+			  </div>
+              <button type="button" class="btn_login" id="sing_up">SingUp</button>
+            </div>
+
+            <div class="container_login" style="background-color:#f1f1f1">
+              <button type="button" data-toggle="modal" class="cancelbtn" data-dismiss="modal" data-target="#modal_login">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      
+    </div>
+  </div>
