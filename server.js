@@ -166,8 +166,8 @@ app.use(function(req, res, next){
 var transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'diennuocwartec@gmail.com',
-    pass: 'diennuocwartec123'
+    user: 'greenfuturevn.ldt@gmail.com',
+    pass: 'greenfuturevn'
   }
 });
 
@@ -237,7 +237,7 @@ var storage = multer.diskStorage({
   	var d = new Date();
     var n = d.getTime()
     var res = file.originalname.split(".");
-    var fileNameUpload = n + "." + res[res.length -1];
+    var fileNameUpload = n + Math.floor(Math.random() * 10000) + "." + res[res.length -1];
     cb(null, fileNameUpload);
     if (mainFile == "") {
     	mainFile = fileNameUpload;
@@ -953,18 +953,19 @@ app.post("/buy_now_next_step", function(req, res){
         infoProductHtml += '</div>' ;
         //Send mail 
         var mailOptions = {
-          from: 'diennuocwartec@gmail.com',
+          from: 'greenfuturevn.ldt@gmail.com',
           to: mailSend,
           subject: 'Thông báo đặt hàng thành công',
           forceEmbeddedImages: true,
-          html: '<div style="margin: auto;width: 60%;border: 3px solid #73AD21;padding: 10px;border-radius: 10px;">' + 
+          html: '<div style="margin: auto;width: 90%;border: 3px solid #73AD21;padding: 10px;border-radius: 10px;">' + 
                   '<h1 style="color:red; text-align:center">XÁC NHẬN ĐẶT HÀNG THÀNH CÔNG</h1>' +
                   '<p>Xin chào ! <span style="color:red">'+ req.body.name +'</span> chúng tôi đã nhận được đơn đặt hàng của bạn, cảm ơn vì đã đặt hàng của chúng tôi, chúng tôi sẽ liên hệ và giao hàng đến bạn một cách sớm nhất</p>' +
                   infoProductHtml +
                   '<div>' +
-                    '<img src="' + fullUrl + '/themes/img/logo.gif" alt="Logo" title="Logo" style="display:block;" /> <br> <b>ĐIỆN NƯỚC WARTEC</b>' +
-                    '<br><br><p>ĐC : 138/45 Hoàng Văn Thái, quận Liên Chiểu, TP Đà Nẵng</p>' +
-                    '<p>SDT: 0389.501.059 - 0946.276370</p>' +
+                    '<img src="' + fullUrl + 'img/logo.png" alt="Logo" title="Logo" style="display:block;" />' +
+                    '<br> <b>Công Ty TNHH Sản Xuất Và Thương Mại Green Future Việt Nam</b>' +
+                    '<br><p>ĐC : 350/47/3 Lê Đức Thọ, Phường 6, Quận Gò Vấp, Tp Hồ Chí Minh.</p>' +
+                    '<p>SDT: 0986.399.409 - 0973.916.295</p>' +
                   '</div>' +
                 '</div>'
         };
