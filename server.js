@@ -946,7 +946,7 @@ app.post("/buy_now_next_step", function(req, res){
                                     '<p><b>Giá: </b><span style="color:red"><b>'+  productData[i].product_info[0].price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') +' VND</b></span></p>' +
                                     '<p><b>Thành tiền: </b><span style="color:red"><b>'+  totalPriceItem.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') +' VND</b></span></p>' +
                                   '</div>' + 
-                                '</div> <br>';
+                                '</div>';
         }
         infoProductHtml += '<p><b>Tổng cộng: </b><span style="color:red"><b>'+  totalAll.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') +' VND</b></span></p>';
         infoProductHtml += '<a href="'+ fullUrl +'/product_booking_detail?id=' + autoIndex + '"><button style="font-size: 20px;color: red;">XEM CHI TIẾT ĐƠN HÀNG</button></a>'
@@ -962,7 +962,7 @@ app.post("/buy_now_next_step", function(req, res){
                   '<p>Xin chào ! <span style="color:red">'+ req.body.name +'</span> chúng tôi đã nhận được đơn đặt hàng của bạn, cảm ơn vì đã đặt hàng của chúng tôi, chúng tôi sẽ liên hệ và giao hàng đến bạn một cách sớm nhất</p>' +
                   infoProductHtml +
                   '<div>' +
-                    '<img src="' + fullUrl + '/img/logo-lg.png" alt="Logo" title="Logo" style="display:block;" />' +
+                    '<img src="' + fullUrl + '/img/logo_mail.png" alt="Logo" title="Logo" style="display:block;" />' +
                     '<br> <b>Công Ty TNHH Sản Xuất Và Thương Mại Green Future Việt Nam</b>' +
                     '<br><p>ĐC : 350/47/3 Lê Đức Thọ, Phường 6, Quận Gò Vấp, Tp Hồ Chí Minh.</p>' +
                     '<p>SDT: 0986.399.409 - 0973.916.295</p>' +
