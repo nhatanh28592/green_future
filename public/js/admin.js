@@ -140,7 +140,7 @@ $(document).ready(function(){
 
                 $("input[name='name']", "#modalProductEdit").val(productData.info_product.name);
                 $("input[name='price']", "#modalProductEdit").val(productData.info_product.price);
-                $("input[name='description']", "#modalProductEdit").val(productData.info_product.description);
+                $("textarea[name='description']", "#modalProductEdit").val(productData.info_product.description);
 
                 $("input[name='product_id']", "#modalProductEdit").val(productData._id);
 
