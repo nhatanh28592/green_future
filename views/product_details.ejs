@@ -33,7 +33,7 @@
 		<div class="offcanvas-wrapper" style="background-color: #f5f5f5;">
 		<section class="container padding-top-1x" style="background-color:white;">
 			<h3 class="text-center mb-30" style="color:blue"><%= product.info_product.name %></h3>
-				<div class="row" style="background-color: #ff9800">
+				<div class="row" style="background-color: #4eea0d">
 				<div class="col-md-6 col-sm-6" style="">
 					<br>
 					<div class="card mb-30"><a class="card-img-tiles picture" style="cursor: pointer;">
@@ -47,7 +47,7 @@
 			            </div></a>
 						<div class="card-body text-center">
 			                <h4 class="card-title" style="color:blue"><%= product.info_product.name %></h4>
-			                <p class="money_format" style="color:red; font-weight:bold;"><%= product.info_product.price %></p><button name="add_cart" class="btn btn-outline-primary btn-sm" href="">Thêm vào giỏ hàng</button>
+			                <button name="add_cart" class="btn btn-outline-primary btn-sm" href="">Thêm vào giỏ hàng</button>
 			            </div>
 					</div>
 				</div>
@@ -81,10 +81,6 @@
 							<br>
 							<div><b>Số lượng: </b> 
 								<div> <input type="number" name="input_number_product" class="form-control" value="1" min="1"/></div>
-							<div>
-								<br>
-								<span style="font-weight:bold;color:blue;font-size:5">Thành tiền: </span><span class="money_format" id="money" style="font-weight:bold;color:red;font-size:6"><%= product.info_product.price %></span>
-							</div>
 						</div>
 						<a href="#" id="addClass"><span class="glyphicon glyphicon-comment btn-lg"></span> Open in chat </a>
 						<br>

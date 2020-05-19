@@ -85,8 +85,6 @@
 			  <tr>
 			    <th>Sản phẩm</th>
 			    <th>Số lượng</th>
-			    <th>Đơn giá (VND)</th>
-			    <th>Thành tiền (VND)</th>
 			    <th>Tùy chọn</th>
 			  </tr>
 			</thead>
@@ -96,8 +94,6 @@
 					<tr>
 				     	<td><b><%= info.name %></b><img src="upload/<%= info.main_file %>" width="80px" height="80px"></td>
 				    	<td><%= info.number %></td>
-				    	<td class="money_format"><%= info.price %></td>
-				    	<td class="money_format"><%= info.price*info.number %></td>
 				    	<td>
 				    		<button type="button" class="btn-delete">
 								<i class="icon-delete"></i>
@@ -109,7 +105,6 @@
 				<% }); %>
 			</tbody>
 			</table>
-			<span>Tổng tiền: </span><span style="color:red"><%= total_price %> VND</span>
 			</div>
 			</div>
 		</div>

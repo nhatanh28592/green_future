@@ -1,5 +1,5 @@
 <section class="container padding-top-1x" style="background-color:white">
-<h3 class="text-center mb-30">Sản Phẩm liên quan</h3>
+<h3 class="text-center mb-30"style="font-weight: bold;">SẢN PHẨM LIÊN QUAN</h3>
 <% if(products.length == 0){ %>
 	<div style="color:red" class="text-center">Không tìm thấy sản phẩm nào ! </div><br>
 <% }%> 
@@ -20,9 +20,6 @@
 				<img src="upload/<%= product.info_product.main_file %>" alt="Product">
 			  </a>
 			  <h3 class="product-title"><a href="product_details?productId=<%= product._id %>&type_main=<%= product.type.type_main %>&type=<%= product.type.type %>"><%= product.info_product.name %></a></h3>
-			  <h4 class="product-price">
-				<p class="money_format" style="color:red; font-weight:bold;" ><%= product.info_product.price %></p>
-			  </h4>
 			  <div class="product-buttons">
 				<button class="btn btn-outline-secondary btn-sm btn-wishlist" data-toggle="tooltip" title="" data-original-title="Whishlist"><i class="icon-heart"></i></button>
 				<a class="btn btn-outline-primary btn-sm" href="product_details?productId=<%= product._id %>&type_main=<%= product.type.type_main %>&type=<%= product.type.type %>">Xem Sản Phẩm</a>		  </div>

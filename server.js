@@ -571,18 +571,6 @@ app.get("/product_details", function(req, res){
             }
           }
 	      );
-        collectionUsers.find({ 
-        }).toArray(
-          function (err, result) {
-            if (err) {
-                console.log(err);
-            } else if (result.length) {
-              users = result;
-            } else {
-              console.log('No document(s) users');
-            }
-          }
-        );
 	      collection.findOne({'_id': parseInt(req.query.productId)}, function(err, document) {
 			  	console.log("data: " + document._id);
 			  	var productBooking = getInfoProductBooking(req.cookies.cookieName);
@@ -611,7 +599,7 @@ app.get("/product_details", function(req, res){
     	 					  type: req.query.type,
     	 					  productId: req.query.productId,
                   user: req.user,
-                  list_user: users,
+                  list_user: null,
                   product_booking_data: productBooking
                 });
               } else {
@@ -943,12 +931,9 @@ app.post("/buy_now_next_step", function(req, res){
                                   '<div style="position:absolute;width:250px;right:0;top:0;">'+
                                     '<p><b>Name: </b>' + productData[i].product_info[0].name + '</p>' +
                                     '<p><b>Số lượng: </b>' + productData[i].product_info[0].number + '</p>' +
-                                    '<p><b>Giá: </b><span style="color:red"><b>'+  productData[i].product_info[0].price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') +' VND</b></span></p>' +
-                                    '<p><b>Thành tiền: </b><span style="color:red"><b>'+  totalPriceItem.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') +' VND</b></span></p>' +
                                   '</div>' + 
                                 '</div>';
         }
-        infoProductHtml += '<p><b>Tổng cộng: </b><span style="color:red"><b>'+  totalAll.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') +' VND</b></span></p>';
         infoProductHtml += '<a href="'+ fullUrl +'/product_booking_detail?id=' + autoIndex + '"><button style="font-size: 20px;color: red;">XEM CHI TIẾT ĐƠN HÀNG</button></a>'
         infoProductHtml += '</div>' ;
         //Send mail 

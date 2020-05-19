@@ -1,5 +1,5 @@
 <section class="container padding-top-1x" style="background-color:white">
-<h3 class="text-center mb-30">Sản Phẩm</h3>
+<h3 class="text-center mb-30" style="font-weight: bold;">SẢN PHẨM</h3>
 <% if(products.length == 0){ %>
 	<div style="color:red" class="text-center">Không tìm thấy sản phẩm nào ! </div><br>
 <% }%> 
@@ -24,7 +24,6 @@
             </div></a>
 			<div class="card-body text-center">
                 <h4 class="card-title" style="color:blue"><%= product.info_product.name %></h4>
-                <p class="money_format" style="color:red; font-weight:bold;" ><%= product.info_product.price %></p>
                 <a class="btn btn-outline-primary btn-sm" href="product_details?productId=<%= product._id %>&type_main=<%= product.type.type_main %>&type=<%= product.type.type %>">Xem Sản Phẩm</a>
             </div>
 		</div>
