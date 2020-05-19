@@ -497,6 +497,57 @@ app.post("/add_new_product", function(req, res){
 	});
 });
 
+app.post("/add_news", function(req, res){
+  uploadMultiFile(req, res, function(err){
+    if(err) {
+      res.send("Error");
+    } else {
+      connection.when('available', function (err, db) {
+        var collection = db.collection('news');
+        if(req.body.news_id) {
+          console.log("Update excute , ID: " + req.body.product_id + ", FILE: " + jsonInfoMultiFile);
+          if(jsonInfoMultiFile != "") {
+            collection.update(
+              { _id: parseInt(req.body.news_id)},
+              { $set:
+                { title: req.body.title,
+                  info: req.body.info,
+                  file: JSON.parse("[" + jsonInfoMultiFile.substring(0, jsonInfoMultiFile.length -1) + "]")
+                }
+              }
+            );
+            jsonInfoMultiFile = "";
+          } else {
+            console.log("File not found");
+            collection.findOne({'_id': parseInt(req.body.news_id)}, function(err, product) {
+              collection.update(
+                { _id: parseInt(req.body.news_id)},
+                { $set:
+                  { 
+                    title: req.body.title,
+                    info: req.body.info
+                  }
+                }
+              );
+            });
+          }
+        } else {
+          console.log("Insert excute");
+          autoIncrement.getNextSequence(db, 'news', function (err, autoIndex) {
+            collection.insert({
+              _id: autoIndex,
+              title: req.body.title,
+              info: req.body.info,
+              file: JSON.parse("[" + jsonInfoMultiFile.substring(0, jsonInfoMultiFile.length -1) + "]")
+            });
+          });
+        }
+      });
+      res.redirect('/admin_setting');
+    }
+  });
+});
+
 app.post("/save_location_info", function(req, res){
 	console.log("save map");
 	connection.when('available', function (err, db) {

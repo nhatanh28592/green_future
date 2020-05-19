@@ -120,6 +120,9 @@
 				        <td><button class="setting button product"><span class="glyphicon glyphicon-tags btn-lg"> Sản phẩm</span> </button></td>
 				      </tr>
 				      <tr>
+				        <td><button class="setting button" data-toggle="modal" data-target="#modalNews"><span class="glyphicon glyphicon-tags btn-lg"> Tin Tức</span> </button></td>
+				      </tr>
+				      <tr>
 				        <td><button class="setting button product_booking"><span class="glyphicon glyphicon-th-list btn-lg"> Đơn hàng</span> </button></td>
 				      </tr>
 				      <tr>
@@ -266,6 +269,41 @@
 					<input type="number" class="form-control" name="price" id="price">
 					<label>Mô tả:</label>
 					<textarea class="form-control" rows="5" name="description" id="description"></textarea>
+					<label>Thêm hình ảnh:</label>
+					<input type="file" class="form-control" name="multiFile" id="multiFile" multiple>
+				</div>
+				<button type="submit" class="btn btn-primary">saveData</button>
+			  </form>
+	        </div>
+	        
+	        <!-- Modal footer -->
+	        <div class="modal-footer">
+	          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	        </div>
+	        
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="modal fade" id="modalNews">
+	    <div class="modal-dialog modal-lg">
+	      <div class="modal-content">
+	      
+	        <!-- Modal Header -->
+	        <div class="modal-header">
+	          <h4 class="modal-title">Thêm Tin tức</h4>
+	          <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        </div>
+	        
+	        <!-- Modal body -->
+	        <div class="modal-body">
+	          <form action="add_news" method="POST" role="form" enctype="multipart/form-data">
+
+				<div class="form-group">
+					<label>Title:</label>
+					<input type="text" class="form-control" name="title" id="title">
+					<label>Nội dung tin tức:</label>
+					<textarea class="form-control" rows="5" name="info" id="info"></textarea>
 					<label>Thêm hình ảnh:</label>
 					<input type="file" class="form-control" name="multiFile" id="multiFile" multiple>
 				</div>
