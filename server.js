@@ -887,6 +887,7 @@ app.post("/buy_now", function(req, res){
 	        console.log('Unable to connect to the mongoDB server. Error:', err);
 		    } else {
 	        var collection = db.collection('type_main');	 
+          var collectionNews = db.collection('news');
 		 		  collection.aggregate([{
 			    	$lookup: {
 			        from: "type",
@@ -899,16 +900,25 @@ app.post("/buy_now", function(req, res){
               if (err) {
                   console.log(err);
               } else if (result.length) {
-                console.log("DATA: " +  JSON.stringify(result));
-                var productBooking = getInfoProductBooking(req.cookies.cookieName);
-                res.render("product_buy", {
-                  products: productBuyList, 
-                  total_product: total, 
-                  total_price: totalPrice.toLocaleString(), 
-                  types: result,
-                  user: req.user,
-                  product_booking_data: productBooking
-                });
+                collectionNews.find().toArray(
+                  function (err, res_news) {
+                    if (err) {
+                      console.log(err);
+                    } else {
+                      console.log("DATA: " +  JSON.stringify(result));
+                      var productBooking = getInfoProductBooking(req.cookies.cookieName);
+                      res.render("product_buy", {
+                        products: productBuyList, 
+                        total_product: total, 
+                        total_price: totalPrice.toLocaleString(), 
+                        types: result,
+                        user: req.user,
+                        product_booking_data: productBooking,
+                        news_id: null,
+                        news_data:res_news
+                      });
+                    }
+                  });
               } else {
                 console.log('No document(s) found with defined "find" criteria!');
                 res.send("ERROR");
