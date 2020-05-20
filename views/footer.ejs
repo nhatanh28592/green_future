@@ -1,5 +1,58 @@
 <div class="offcanvas-wrapper" style="background-color: #f5f5f5;">
 <section class="container padding-top-1x" style="background-color: white;">
+<h3 class="text-center mb-30"style="font-weight: bold;">TIN TỨC</h3>
+  <% news_data.forEach(function(news, index) { %>
+  <% if(news_id){ %>
+    <% if(news._id == news_id){ %>
+        <div class="row">
+        <div class="col-lg-8 col-md-8" style="color:black; font-size:16px">
+          <div style="white-space: pre-wrap"><%= news.info %></div>
+          <br>
+          <h3 class=""style="font-weight: bold;">LIÊN HỆ</h3>
+            <p class="">Công Ty TNHH Sản Xuất Và Thương Mại Green Future Việt Nam</p>
+            <p class="">Phone: 0986.399.409 - 0973.916.295</p>
+            <p class="">ĐC: 350/47/3 Lê Đức Thọ, Phường 6, Quận Gò Vấp, Tp Hồ Chí Minh.</p>
+            <ul class="list-unstyled text-sm">
+              <li><span class="opacity-50">Monday-Sunday:</span> 7.00 am - 12.00 pm</li>
+            </ul>
+            <p><a class="" href="#">Info@greenfuturestraw.com</a></p>
+        </div>
+        <div class="col-lg-4 col-md-4 text-center">
+          <% news.file.forEach(function(file, index) { %>
+          <img src="upload/<%= file.fileName %>" alt="Green Future VN" style="margin-top:10px;width:100%;border-radius: 10px;">
+          <% }); %>
+        </div>
+      </div>
+    <% } %>
+  <% } else { %>
+    <% if(index == 0){ %>
+      <div class="row">
+        <div class="col-lg-8 col-md-8" style="color:black; font-size:16px">
+          <div style="white-space: pre-wrap"><%= news.info %></div>
+          <br>
+          <h3 class=""style="font-weight: bold;">LIÊN HỆ</h3>
+            <p class="">Công Ty TNHH Sản Xuất Và Thương Mại Green Future Việt Nam</p>
+            <p class="">Phone: 0986.399.409 - 0973.916.295</p>
+            <p class="">ĐC: 350/47/3 Lê Đức Thọ, Phường 6, Quận Gò Vấp, Tp Hồ Chí Minh.</p>
+            <ul class="list-unstyled text-sm">
+              <li><span class="opacity-50">Monday-Sunday:</span> 7.00 am - 12.00 pm</li>
+            </ul>
+            <p><a class="" href="#">Info@greenfuturestraw.com</a></p>
+        </div>
+        <div class="col-lg-4 col-md-4 text-center">
+          <% news.file.forEach(function(file, index) { %>
+          <img src="upload/<%= file.fileName %>" alt="Green Future VN" style="margin-top:10px;width:100%;border-radius: 10px;">
+          <% }); %>
+        </div>
+      </div>
+    <% } %>
+  <% } %>
+  <% }); %>
+  </section>
+</div>
+
+<div class="offcanvas-wrapper" style="background-color: #f5f5f5;">
+<section class="container padding-top-1x" style="background-color: white;">
 <h3 class="text-center mb-30"style="font-weight: bold;">GIẤY CHỨNG NHẬN</h3>
   <div class="row">
     <div class="col-lg-4 col-md-4 text-center">
@@ -13,7 +66,7 @@
     </div>
     </div>
   </section>
-  </div>
+</div>
 <div class="offcanvas-wrapper" style="background-color: #f5f5f5;">
 <section class="container padding-top-1x" style="background-color:white;">
 <h3 class="text-center mb-30"style="font-weight: bold;">KHÁCH HÀNG TIÊU BIỂU</h3>
@@ -132,11 +185,9 @@
           <section class="widget widget-links widget-light-skin">
             <h3 class="widget-title text-white"style="font-weight: bold;">TIN TỨC</h3>
             <ul>
-              <li><a href="#">Sản phẩm 100%  tự nhiên.</a></li>
-              <li><a href="#">Không hóa chất trong quá trình sản xuất.</a></li>
-              <li><a href="#">Sản phẩm có giấy chứng nhận SGS, QUATEST 3, EROFINS, giấy tự công bố.</a></li>
-              <li><a href="#">Sản phẩm  được tiệt trùng bằng tia UV.</a></li>
-              <li><a href="#">Phân hủy 100% trong môi trường tự nhiên.</a></li>
+            <% news_data.forEach(function(news, index) { %>
+              <li><a href="?newsId=<%= news._id %>"><%=news.title%></a></li>
+            <% }); %>
             </ul>
           </section>
         </div>
@@ -167,5 +218,3 @@
 <script src="js/scripts.min.js"></script>
 <!-- Customizer scripts-->
 <script src="js/customizer.min.js"></script>
-<%- include chat.ejs %>
-<%- include modal_singup.ejs %>

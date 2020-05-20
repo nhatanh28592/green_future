@@ -256,6 +256,7 @@ app.set("views", "./views");
 app.get("/", function(req, res){
 	var pageStr = req.query.page;
 	var search = req.query.search;
+  var newsId = req.query.newsId;
 	console.log("Page: " + page);
 	var page = 0;
 	if (pageStr != undefined) {
@@ -268,6 +269,7 @@ app.get("/", function(req, res){
 	connection.when('available', function (err, db) {
     var collection = db.collection('product');
     var collectionType = db.collection('type_main');
+    var collectionNews = db.collection('news');
     collection.find({"info_product.name_utf":new RegExp(utf8(search), "i")}).toArray
     (
       function (err, result) {
@@ -287,24 +289,34 @@ app.get("/", function(req, res){
               if (err) {
                 console.log(err);
               } else {
-              	var prevPager = page - 1;
-              	var nextPager = page + 1;
-                var resultTmp;
-                if (result.length) {
-                  resultTmp = result.slice(numberPager*page, numberPager*page + numberPager);
-                } else {
-                  resultTmp = [];
-                }
-    	 					res.render("index", {products: resultTmp, 
-                  types: res_type, 
-    	 						count: (result.length/numberPager),
-    	 						prevPager: prevPager,
-    	 						nextPager: nextPager,
-    	 						page: page,
-    	 						list: false, 
-    	 						user: req.user,
-                  product_booking_data: productBooking
-    	 					});
+                collectionNews.find().toArray(
+                  function (err, res_news) {
+                    if (err) {
+                      console.log(err);
+                    } else {
+                    	var prevPager = page - 1;
+                    	var nextPager = page + 1;
+                      var resultTmp;
+                      if (result.length) {
+                        resultTmp = result.slice(numberPager*page, numberPager*page + numberPager);
+                      } else {
+                        resultTmp = [];
+                      }
+          	 					res.render("index", {products: resultTmp, 
+                        types: res_type, 
+          	 						count: (result.length/numberPager),
+          	 						prevPager: prevPager,
+          	 						nextPager: nextPager,
+          	 						page: page,
+          	 						list: false, 
+          	 						user: req.user,
+                        product_booking_data: productBooking,
+                        news_id: newsId,
+                        news_data:res_news
+          	 					});
+                    }
+                  }
+                );
               }
             }
           );
@@ -325,6 +337,7 @@ app.get("/product_list", function(req, res){
 	connection.when('available', function (err, db) {
     var collection = db.collection('product');
  		var collectionType = db.collection('type_main');
+    var collectionNews = db.collection('news');
     collection.find({ "type" : {
       "type_main" : type_main,
       "type" : type
@@ -342,30 +355,40 @@ app.get("/product_list", function(req, res){
 			    	}
 					}]).toArray(
             function (err, res_type) {
+
               if (err) {
                   console.log(err);
               } else {
-                var productBooking = getInfoProductBooking(req.cookies.cookieName);
-              	var prevPager = page - 1;
-              	var nextPager = page + 1;
-                var resultTmp;
-                if (result.length) {
-                  resultTmp = result.slice(numberPager*page, numberPager*page + numberPager);
-                } else {
-                  resultTmp = [];
-                }
-    	 					res.render("index", {products: resultTmp, 
-    	 						types: res_type, 
-    	 						count: (result.length/numberPager),
-    	 						prevPager: prevPager,
-    	 						nextPager: nextPager,
-    	 						page: page,
-    	 						list: true,
-    	 						type_main: type_main,
-    	 						type: type, 
-                  user: req.user,
-                  product_booking_data: productBooking
-    	 					});
+                collectionNews.find().toArray(
+                  function (err, res_news) {
+                    if (err) {
+                      console.log(err);
+                    } else {
+                      var productBooking = getInfoProductBooking(req.cookies.cookieName);
+                    	var prevPager = page - 1;
+                    	var nextPager = page + 1;
+                      var resultTmp;
+                      if (result.length) {
+                        resultTmp = result.slice(numberPager*page, numberPager*page + numberPager);
+                      } else {
+                        resultTmp = [];
+                      }
+          	 					res.render("index", {products: resultTmp, 
+          	 						types: res_type, 
+          	 						count: (result.length/numberPager),
+          	 						prevPager: prevPager,
+          	 						nextPager: nextPager,
+          	 						page: page,
+          	 						list: true,
+          	 						type_main: type_main,
+          	 						type: type, 
+                        user: req.user,
+                        product_booking_data: productBooking,
+                        news_id: null,
+                        news_data:res_news
+          	 					});
+                    }
+                  });
               }
             }
 		      );
@@ -606,6 +629,7 @@ app.get("/product_details", function(req, res){
         var collection = db.collection('product');
         var collectionType = db.collection('type_main');
         var collectionUsers = db.collection('users');
+        var collectionNews = db.collection('news');
 	 		  collection.find({ 
           "type" : {
 		        "type_main" : parseInt(req.query.type_main),
@@ -636,23 +660,33 @@ app.get("/product_details", function(req, res){
               if (err) {
                   console.log(err);
               } else if (res_type.length) {
-              	var prevPager = page - 1;
-              	var nextPager = page + 1;
- 					      res.render("product_details", {
-                  product: document, 
-                  products: resultData.slice(numberPager*page, numberPager*page + numberPager), 
-                  types: res_type,
-	 					      count: (resultData.length/numberPager),
-    	 						prevPager: prevPager,
-    	 						nextPager: nextPager,
-    	 						page: page,
-    	 					  type_main: req.query.type_main,
-    	 					  type: req.query.type,
-    	 					  productId: req.query.productId,
-                  user: req.user,
-                  list_user: null,
-                  product_booking_data: productBooking
-                });
+                collectionNews.find().toArray(
+                  function (err, res_news) {
+                    if (err) {
+                      console.log(err);
+                    } else {
+                    	var prevPager = page - 1;
+                    	var nextPager = page + 1;
+       					      res.render("product_details", {
+                        product: document, 
+                        products: resultData.slice(numberPager*page, numberPager*page + numberPager), 
+                        types: res_type,
+      	 					      count: (resultData.length/numberPager),
+          	 						prevPager: prevPager,
+          	 						nextPager: nextPager,
+          	 						page: page,
+          	 					  type_main: req.query.type_main,
+          	 					  type: req.query.type,
+          	 					  productId: req.query.productId,
+                        user: req.user,
+                        list_user: null,
+                        product_booking_data: productBooking,
+                        news_id: null,
+                        news_data:res_news
+                      });
+                      }
+                    });
+
               } else {
                 console.log('No document(s) product');
               }
@@ -917,6 +951,7 @@ app.get("/buy_now", function(req, res){
 	        console.log('Unable to connect to the mongoDB server. Error:', err);
 		    } else {
 	        var collection = db.collection('type_main');	 
+          var collectionNews = db.collection('news');
 			 		collection.aggregate([{
 			    	$lookup: {
 			        from: "type",
@@ -929,14 +964,23 @@ app.get("/buy_now", function(req, res){
               if (err) {
                   console.log(err);
               } else if (result.length) {
-                var productBooking = getInfoProductBooking(req.cookies.cookieName);
-                res.render("product_buy", {
-                  products: productBuyList, 
-                  total_price: totalPrice.toLocaleString(), 
-                  types: result,
-                  user: req.user,
-                  product_booking_data: productBooking
-                });
+                collectionNews.find().toArray(
+                  function (err, res_news) {
+                    if (err) {
+                      console.log(err);
+                    } else {
+                      var productBooking = getInfoProductBooking(req.cookies.cookieName);
+                      res.render("product_buy", {
+                        products: productBuyList, 
+                        total_price: totalPrice.toLocaleString(), 
+                        types: result,
+                        user: req.user,
+                        product_booking_data: productBooking,
+                        news_id: null,
+                        news_data:res_news
+                      });
+                      }
+                    });
               } else {
                 console.log('No document(s) found with defined "find" criteria!');
                 res.send("ERROR");
@@ -998,7 +1042,7 @@ app.post("/buy_now_next_step", function(req, res){
                   '<p>Xin chào ! <span style="color:red">'+ req.body.name +'</span> chúng tôi đã nhận được đơn đặt hàng của bạn, cảm ơn vì đã đặt hàng của chúng tôi, chúng tôi sẽ liên hệ và giao hàng đến bạn một cách sớm nhất</p>' +
                   infoProductHtml +
                   '<div>' +
-                    '<img src="' + fullUrl + '/img/logo_mail.png" alt="Logo" title="Logo" style="display:block;" />' +
+                    '<img src="' + fullUrl + '/img/logo_mail.png" alt="Logo" title="Logo" style="display:block;height:50px; width: 60px" />' +
                     '<br> <b>Công Ty TNHH Sản Xuất Và Thương Mại Green Future Việt Nam</b>' +
                     '<br><p>ĐC : 350/47/3 Lê Đức Thọ, Phường 6, Quận Gò Vấp, Tp Hồ Chí Minh.</p>' +
                     '<p>SDT: 0986.399.409 - 0973.916.295</p>' +
@@ -1043,6 +1087,7 @@ app.post("/buy_now_next_step", function(req, res){
 	connection.when('available', function (err, db) {
     var collectionProduct = db.collection('product');
 		var collectionType = db.collection('type_main');
+    var collectionNews = db.collection('news');
     collectionProduct.find().toArray
     (
       function (err, document) {
@@ -1063,29 +1108,38 @@ app.post("/buy_now_next_step", function(req, res){
             if (err) {
               console.log(err);
             } else if (result.length) {
-              console.log("DATA: " +  JSON.stringify(result));
-              var dataRefresh = undefined;
-              myCache.set( cookie, dataRefresh, function( err, success ){
-                if( !err && success ){
-                  console.log( success ); 
-                }
-              });
-              var productBooking = getInfoProductBooking(req.cookies.cookieName);
-              res.render("product_buy_next", {
-                products: resultTmp,
-                products_buy: productBuyList, 
-                total_product: 0, 
-                total_price: totalPrice.toLocaleString(), 
-                types: result,
-                user: req.user,
-                list: false,
-                count: (resultTmp.length/numberPager),
-                page: 0,
-                prevPager: -1,
-                nextPager: 1,
-                product_booking_data: productBooking
-              });
-              productData.length =0;
+              collectionNews.find().toArray(
+                  function (err, res_news) {
+                    if (err) {
+                      console.log(err);
+                    } else {
+                      console.log("DATA: " +  JSON.stringify(result));
+                      var dataRefresh = undefined;
+                      myCache.set( cookie, dataRefresh, function( err, success ){
+                        if( !err && success ){
+                          console.log( success ); 
+                        }
+                      });
+                      var productBooking = getInfoProductBooking(req.cookies.cookieName);
+                      res.render("product_buy_next", {
+                        products: resultTmp,
+                        products_buy: productBuyList, 
+                        total_product: 0, 
+                        total_price: totalPrice.toLocaleString(), 
+                        types: result,
+                        user: req.user,
+                        list: false,
+                        count: (resultTmp.length/numberPager),
+                        page: 0,
+                        prevPager: -1,
+                        nextPager: 1,
+                        product_booking_data: productBooking,
+                        news_id: null,
+                        news_data:res_news
+                      });
+                      productData.length =0;
+                    }
+                  });
             } else {
               console.log('No document(s) found with defined "find" criteria!');
               res.render("add_product");
@@ -1106,6 +1160,7 @@ app.get("/product_booking_detail", function(req, res){
 	connection.when('available', function (err, db) {
 		var collectionType = db.collection('type_main');
 		var colectionBooking = db.collection('product_booking');
+    var collectionNews = db.collection('news');
 		colectionBooking.findOne({'_id': parseInt(req.query.id)}, function(err, document) {
 			var totalPrice = 0;
 			for (var i = 0; i < document.info_booking.length; i++) {
@@ -1125,14 +1180,23 @@ app.get("/product_booking_detail", function(req, res){
           if (err) {
             console.log(err);
           } else if (res_type.length) {
-            var productBooking = getInfoProductBooking(req.cookies.cookieName);
-				    res.render("product_booking_detail", {
-              product_booking: document, 
-              types: res_type, total_product: total, 
-              total_price :totalPrice.toLocaleString(),
-              user: req.user,
-              product_booking_data: productBooking
-            });
+            collectionNews.find().toArray(
+                  function (err, res_news) {
+                    if (err) {
+                      console.log(err);
+                    } else {
+                      var productBooking = getInfoProductBooking(req.cookies.cookieName);
+          				    res.render("product_booking_detail", {
+                        product_booking: document, 
+                        types: res_type, total_product: total, 
+                        total_price :totalPrice.toLocaleString(),
+                        user: req.user,
+                        product_booking_data: productBooking,
+                        news_id: null,
+                        news_data:res_news
+                      });
+                      }
+                    });
           } else {
             console.log('No document(s) found with defined "find" criteria!');
             res.send("ERROR");
