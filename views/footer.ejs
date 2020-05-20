@@ -6,9 +6,10 @@
     <% if(news._id == news_id){ %>
         <div class="row">
         <div class="col-lg-8 col-md-8" style="color:black; font-size:16px">
+          <h4 class=""style="font-weight: bold;"><%= news.title %></h4>
           <div style="white-space: pre-wrap"><%= news.info %></div>
           <br>
-          <h3 class=""style="font-weight: bold;">LIÊN HỆ</h3>
+          <h4 class=""style="font-weight: bold;">LIÊN HỆ</h4>
             <p class="">Công Ty TNHH Sản Xuất Và Thương Mại Green Future Việt Nam</p>
             <p class="">Phone: 0986.399.409 - 0973.916.295</p>
             <p class="">ĐC: 350/47/3 Lê Đức Thọ, Phường 6, Quận Gò Vấp, Tp Hồ Chí Minh.</p>
@@ -19,7 +20,7 @@
         </div>
         <div class="col-lg-4 col-md-4 text-center">
           <% news.file.forEach(function(file, index) { %>
-          <img src="upload/<%= file.fileName %>" alt="Green Future VN" style="margin-top:10px;width:100%;border-radius: 10px;">
+          <img src="upload/<%= file.fileName %>" alt="Green Future VN" style="margin-top:15px;width:100%;border-radius: 10px;">
           <% }); %>
         </div>
       </div>
@@ -28,9 +29,10 @@
     <% if(index == 0){ %>
       <div class="row">
         <div class="col-lg-8 col-md-8" style="color:black; font-size:16px">
+          <h4 class=""style="font-weight: bold;"><%= news.title %></h4>
           <div style="white-space: pre-wrap"><%= news.info %></div>
           <br>
-          <h3 class=""style="font-weight: bold;">LIÊN HỆ</h3>
+          <h4 class=""style="font-weight: bold;">LIÊN HỆ</h4>
             <p class="">Công Ty TNHH Sản Xuất Và Thương Mại Green Future Việt Nam</p>
             <p class="">Phone: 0986.399.409 - 0973.916.295</p>
             <p class="">ĐC: 350/47/3 Lê Đức Thọ, Phường 6, Quận Gò Vấp, Tp Hồ Chí Minh.</p>
@@ -41,7 +43,7 @@
         </div>
         <div class="col-lg-4 col-md-4 text-center">
           <% news.file.forEach(function(file, index) { %>
-          <img src="upload/<%= file.fileName %>" alt="Green Future VN" style="margin-top:10px;width:100%;border-radius: 10px;">
+          <img src="upload/<%= file.fileName %>" alt="Green Future VN" style="margin-top:15px;width:100%;border-radius: 10px;">
           <% }); %>
         </div>
       </div>
