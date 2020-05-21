@@ -119,7 +119,7 @@
 <br>
 <!-- Site Footer-->
 <div class="offcanvas-wrapper" style="background: green;">
-  <footer class="site-footer" style="background: green;">
+  <footer class="site-footer" style="background: green; font-size: 12pt;color: white;font-family: 'times new roman', times, serif;">
     <div class="container">
       <div class="row">
         <div class="col-lg-3 col-md-6">
@@ -187,7 +187,7 @@
             <h3 class="widget-title text-white"style="font-weight: bold;">TIN TỨC</h3>
             <ul>
             <% news_data.forEach(function(news, index) { %>
-              <li><a href="/?newsId=<%= news._id %>"><%=news.title%></a></li>
+              <li><a style="background: green; font-size: 12pt;color: white;font-family: 'times new roman', times, serif;" href="/?newsId=<%= news._id %>"><%=news.title%></a></li>
             <% }); %>
             </ul>
           </section>
