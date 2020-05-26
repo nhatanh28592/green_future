@@ -47,7 +47,11 @@
 			            </div></a>
 						<div class="card-body text-center">
 			                <h4 class="card-title" style="color:blue"><%= product.info_product.name %></h4>
-			                <button name="add_cart" class="btn btn-outline-primary btn-sm" href="">Thêm vào giỏ hàng</button>
+			                <% if(language == "vi") { %>
+			                	<button name="add_cart" class="btn btn-outline-primary btn-sm" href="">Thêm vào giỏ hàng</button>
+							<% } else { %>
+								<button name="add_cart" class="btn btn-outline-primary btn-sm" href="">Add to cart</button>
+							<% } %>
 			            </div>
 					</div>
 				</div>
@@ -75,16 +79,25 @@
 						</script>
 						<div class="controls">
 						<div>
-							<div><b>Mô tả: </b>
+							<div>
+								<% if(language == "vi") { %>
+									<b>Mô tả: </b>
+								<% } else { %>
+									<b>Description: </b>
+								<% } %>
 								<div style="white-space: pre-wrap;font-family: 'times new roman', times, serif; font-size: 14pt;color: black"><%= product.info_product.description %></div>
 							</div>
 							<br>
-							<div><b>Số lượng: </b> 
+							<div>
 								<div> <input type="number" name="input_number_product" class="form-control" value="1" min="1"/></div>
 						</div>
 						<a href="#" id="addClass"><span class="glyphicon glyphicon-comment btn-lg"></span> Open in chat </a>
 						<br>
-						<button type="submit" class="btn btn-large btn-danger" style="font-weight:bold;">MUA NGAY</button>
+						<% if(language == "vi") { %>
+							<button type="submit" class="btn btn-large btn-danger" style="font-weight:bold;">MUA NGAY</button>
+						<% } else { %>
+							<button type="submit" class="btn btn-large btn-danger" style="font-weight:bold;">BUY NOW</button>
+						<% } %>
 						</div>
 					  </div>
 					</form>

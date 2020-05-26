@@ -54,11 +54,10 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new GoogleStrategy({
     clientID: "888632730028-3h6ojuvoicub1uf9kds5ljqf72v1m52v.apps.googleusercontent.com",
     clientSecret: "CNCxfFxcoFV766yfMVNlxSHv",
-    callbackURL: "http://localhost:3000/auth/google/callback",
+    callbackURL: "http://greenfuturestraw.com/auth/google/callback",
     passReqToCallback   : true
   },
   function(request, accessToken, refreshToken, profile, done) {
-    console.log("DA CHAY VO DAY NHA ID: " +profile.id );
     User.findOrCreate({ google_id: profile.id.toString()}, {
      google_id: profile.id.toString(),
      user_name:profile.displayName.toString(), 
@@ -75,10 +74,9 @@ passport.use(new GoogleStrategy({
 passport.use(new FacebookStrategy({
     clientID: "1600240390119279",
     clientSecret: "e45ef0c2e066b8fcd9c26aec04a8bfcb",
-    callbackURL: "https://35.237.60.177:3000/auth/facebook/callback"
+    callbackURL: "http://greenfuturestraw.com/auth/facebook/callback"
   },
   function(accessToken, refreshToken, profile, done) {
-    console.log("DA CHAY VO DAY NHA ID: " + profile.id );
     User.findOrCreate({ facebook_id: profile.id.toString()}, {
      facebook_id: profile.id.toString(),
      user_name: profile.displayName.toString(),
@@ -95,12 +93,10 @@ passport.use('local-signin', new LocalStrategy(
     login.localAuth(username, password)
     .then(function (user) {
       if (user) {
-        console.log("LOGGED IN AS: " + user.username);
         req.session.success = 'You are successfully logged in ' + user.username + '!';
         done(null, user);
       }
       if (!user) {
-        console.log("COULD NOT LOG IN");
         req.session.error = 'Could not log user in. Please try again.'; //inform user could not log them in
         done(null, user);
       }
@@ -116,12 +112,10 @@ passport.use('local-signup', new LocalStrategy(
     login.localReg(username, password)
     .then(function (user) {
       if (user) {
-        console.log("REGISTERED: " + user.username);
         req.session.success = 'You are successfully registered and logged in ' + user.username + '!';
         done(null, user);
       }
       if (!user) {
-        console.log("COULD NOT REGISTER");
         req.session.error = 'That username is already in use, please try a different one.'; //inform user could not log them in
         done(null, user);
       }
@@ -174,18 +168,14 @@ var transporter = nodemailer.createTransport({
 //IO
 var users = {};
 io.on('connection', function(socket){
-	console.log("socket: " + socket);
   socket.on('login', function(user){
-    console.log("IP: " + ip.address());
     //var values = Object.values(users);
-    console.log("USER LOGIN:" + user);
     // if (!values.includes(user)) {
     //   users[socket.id] = user;
     // }
     // console.log(values);
   });
   socket.on('message', function(msg){
-  	console.log("MSG:" + msg);
     var msgObj = JSON.parse(msg);
     connection.when('available', function (err, db) {
       autoIncrement.getNextSequence(db, 'message', function (err, autoIndex) {
@@ -221,10 +211,16 @@ app.use(cookieParser());
 // set a cookie
 app.use(function (req, res, next) {
   var cookie = req.cookies.cookieName;
+  var cookieLanguage = req.cookies.cookie_language;
   if (cookie === undefined) {
     var randomNumber=Math.random().toString();
     randomNumber=randomNumber.substring(2,randomNumber.length);
     res.cookie('cookieName',randomNumber, { maxAge: 900000, httpOnly: true });
+  }
+  if (cookieLanguage === undefined) {
+    var randomNumber=Math.random().toString();
+    randomNumber=randomNumber.substring(2,randomNumber.length);
+    res.cookie('cookie_language',randomNumber, { maxAge: 900000, httpOnly: true });
   }
   next();
 });
@@ -257,7 +253,13 @@ app.get("/", function(req, res){
 	var pageStr = req.query.page;
 	var search = req.query.search;
   var newsId = req.query.newsId;
-	console.log("Page: " + page);
+  var cookieLanguage = req.cookies.cookie_language;
+  var language;
+  if(cookieLanguage) {
+    language = myCache.get(cookieLanguage);
+  } else {
+    language = "vi";
+  }
 	var page = 0;
 	if (pageStr != undefined) {
 		page = parseInt(pageStr);
@@ -267,9 +269,20 @@ app.get("/", function(req, res){
 	}
 	// Get the documents collection
 	connection.when('available', function (err, db) {
-    var collection = db.collection('product');
-    var collectionType = db.collection('type_main');
-    var collectionNews = db.collection('news');
+    var collection;
+    var collectionType;
+    var type = "type";
+    var collectionNews;
+    if (language == "vi") {
+      collection = db.collection('product');
+      collectionType = db.collection('type_main');
+      collectionNews = db.collection('news');
+    } else {
+      collection = db.collection('product_en');
+      collectionType = db.collection('type_main_en');
+      collectionNews = db.collection('news_en');
+      type = "type_en";
+    }
     collection.find({"info_product.name_utf":new RegExp(utf8(search), "i")}).toArray
     (
       function (err, result) {
@@ -279,7 +292,7 @@ app.get("/", function(req, res){
           var productBooking = getInfoProductBooking(req.cookies.cookieName);
     	 		collectionType.aggregate([{
 			    	$lookup: {
-			        from: "type",
+			        from: type,
 			        localField: "_id",
 			        foreignField: "type_main",
 			        as: "type_info"
@@ -302,6 +315,7 @@ app.get("/", function(req, res){
                       } else {
                         resultTmp = [];
                       }
+                      console.log("LANGUAGE: " + language);
           	 					res.render("index", {products: resultTmp, 
                         types: res_type, 
           	 						count: (result.length/numberPager),
@@ -312,7 +326,8 @@ app.get("/", function(req, res){
           	 						user: req.user,
                         product_booking_data: productBooking,
                         news_id: newsId,
-                        news_data:res_news
+                        news_data:res_news,
+                        language: language
           	 					});
                     }
                   }
@@ -332,15 +347,34 @@ app.get("/product_list", function(req, res){
 	if (pageStr != undefined) {
 		page = parseInt(pageStr);
 	}
+  var cookieLanguage = req.cookies.cookie_language;
+  var language;
+  if(cookieLanguage) {
+    language = myCache.get(cookieLanguage);
+  } else {
+    language = "vi";
+  }
 	var type_main = parseInt(req.query.type_main);
-	var type = parseInt(req.query.type);
+	var type_tmp = parseInt(req.query.type);
 	connection.when('available', function (err, db) {
-    var collection = db.collection('product');
- 		var collectionType = db.collection('type_main');
-    var collectionNews = db.collection('news');
+    var collection;
+    var collectionType;
+    var collectionNews;
+    var type = "type";
+    var typeMain = "type_main";
+    if (language == "vi") {
+      collection = db.collection('product');
+      collectionType = db.collection('type_main');
+      collectionNews = db.collection('news');
+    } else {
+      collection = db.collection('product_en');
+      collectionType = db.collection('type_main_en');
+      collectionNews = db.collection('news_en');
+      type ="type_en";
+    }
     collection.find({ "type" : {
       "type_main" : type_main,
-      "type" : type
+      "type" : type_tmp
     }}).toArray(
       function (err, result) {
         if (err) {
@@ -348,7 +382,7 @@ app.get("/product_list", function(req, res){
         } else {
 			 		collectionType.aggregate([{
 			    	$lookup: {
-				        from: "type",
+				        from: type,
 				        localField: "_id",
 				        foreignField: "type_main",
 				        as: "type_info"
@@ -385,7 +419,8 @@ app.get("/product_list", function(req, res){
                         user: req.user,
                         product_booking_data: productBooking,
                         news_id: null,
-                        news_data:res_news
+                        news_data:res_news,
+                        language:language
           	 					});
                     }
                   });
@@ -428,14 +463,32 @@ app.get('/io_chat', function(req, res){
   res.render("iochat");
 });
 
+app.post("/change_language", function(req, res){
+  var language = req.body.language;
+  console.log("LANGUAGE SAVE: " + req.body.language);
+  var cookie = req.cookies.cookie_language;
+  myCache.set( cookie, language, function( err, success ){
+    if( !err && success ){
+      res.redirect('/');
+    } else {
+      res.redirect('/');
+    }
+  });
+});
+
 app.post("/add_new_product", function(req, res){
 	uploadMultiFile(req, res, function(err){
 		if(err) {
 			res.send("Error");
 		} else {
+      var collection;
       console.log("Type_main: " + req.body.type_main);
 			connection.when('available', function (err, db) {
-        var collection = db.collection('product');
+        if (req.body.language == "0") {
+          collection = db.collection('product');
+        } else {
+          collection = db.collection('product_en');
+        }
         var color = [];
         if( Object.prototype.toString.call( req.body.color ) === '[object Array]' ) {
           color = req.body.color;
@@ -622,14 +675,32 @@ app.get("/product_details", function(req, res){
 	var page = 0;
 	var resultData;
   var users;
+  var cookieLanguage = req.cookies.cookie_language;
+  var language;
+  if(cookieLanguage) {
+    language = myCache.get(cookieLanguage);
+  } else {
+    language = "vi";
+  }
 	connection.when('available', function (err, db) {
 	    if (err) {
 	        console.log('Unable to connect to the mongoDB server. Error:', err);
 	    } else {
-        var collection = db.collection('product');
-        var collectionType = db.collection('type_main');
+        var collection;
+        var collectionType;
+        var type = "type";
+        var collectionNews;
+        if (language == "vi") {
+          collection = db.collection('product');
+          collectionType = db.collection('type_main');
+          collectionNews = db.collection('news');
+        } else {
+          collection = db.collection('product_en');
+          collectionType = db.collection('type_main_en');
+          collectionNews = db.collection('news_en');
+          type = "type_en";
+        }
         var collectionUsers = db.collection('users');
-        var collectionNews = db.collection('news');
 	 		  collection.find({ 
           "type" : {
 		        "type_main" : parseInt(req.query.type_main),
@@ -651,7 +722,7 @@ app.get("/product_details", function(req, res){
 			  	var productBooking = getInfoProductBooking(req.cookies.cookieName);
         	collectionType.aggregate([{
 		    	$lookup: {
-		        from: "type",
+		        from: type,
 		        localField: "_id",
 		        foreignField: "type_main",
 		        as: "type_info"
@@ -682,7 +753,8 @@ app.get("/product_details", function(req, res){
                         list_user: null,
                         product_booking_data: productBooking,
                         news_id: null,
-                        news_data:res_news
+                        news_data:res_news,
+                        language:language
                       });
                       }
                     });
@@ -702,7 +774,12 @@ app.post("/product_details", function(req, res){
     if (err) {
         console.log('Unable to connect to the mongoDB server. Error:', err);
     } else {
-      var collection = db.collection('product');
+      var collection;
+      if (language == "vi") {
+        collection = db.collection('product');
+      } else {
+        collection = db.collection('product_en');
+      }
       collection.findOne({'_id': parseInt(req.body.product_id)}, function(err, document) {
 	  	  var total;
       	var cookie = req.cookies.cookieName;
@@ -834,6 +911,13 @@ app.post("/delivery_update", function(req, res){
 
 app.post("/buy_now", function(req, res){
 	console.log("data:" + req.body.product_id);
+  var cookieLanguage = req.cookies.cookie_language;
+  var language;
+  if(cookieLanguage) {
+    language = myCache.get(cookieLanguage);
+  } else {
+    language = "vi";
+  }
 	var cookie = req.cookies.cookieName;
 	if (cookie == null || cookie == undefined) {
 		res.send("ERROR please go home page");
@@ -886,11 +970,20 @@ app.post("/buy_now", function(req, res){
 		    if (err) {
 	        console.log('Unable to connect to the mongoDB server. Error:', err);
 		    } else {
-	        var collection = db.collection('type_main');	 
-          var collectionNews = db.collection('news');
+	        var collection; 
+          var collectionNews;
+          var type = "type";
+          if (language == "vi") {
+            collection = db.collection('type_main');   
+            collectionNews = db.collection('news');
+          } else {
+            collection = db.collection('type_main_en');  
+            collectionNews = db.collection('news_en');
+            type = "type_en";
+          }
 		 		  collection.aggregate([{
 			    	$lookup: {
-			        from: "type",
+			        from: type,
 			        localField: "_id",
 			        foreignField: "type_main",
 			        as: "type_info"
@@ -915,7 +1008,8 @@ app.post("/buy_now", function(req, res){
                         user: req.user,
                         product_booking_data: productBooking,
                         news_id: null,
-                        news_data:res_news
+                        news_data:res_news,
+                        language:language
                       });
                     }
                   });
@@ -935,6 +1029,13 @@ app.post("/buy_now", function(req, res){
 
 app.get("/buy_now", function(req, res){
 	console.log("data:" + req.body.product_id);
+  var cookieLanguage = req.cookies.cookie_language;
+  var language;
+  if(cookieLanguage) {
+    language = myCache.get(cookieLanguage);
+  } else {
+    language = "vi";
+  }
 	var cookie = req.cookies.cookieName;
 	if (cookie == null || cookie == undefined) {
 		res.send("ERROR please go home page");
@@ -960,11 +1061,20 @@ app.get("/buy_now", function(req, res){
 		    if (err) {
 	        console.log('Unable to connect to the mongoDB server. Error:', err);
 		    } else {
-	        var collection = db.collection('type_main');	 
-          var collectionNews = db.collection('news');
+	        var collection; 
+          var collectionNews;
+          var type = "type";
+          if (language == "vi") {
+            collection = db.collection('type_main'); 
+            collectionNews = db.collection('news');  
+          } else {
+            collection = db.collection('type_main_en');  
+            collectionNews = db.collection('news_en');
+            type = "type_en";
+          }
 			 		collection.aggregate([{
 			    	$lookup: {
-			        from: "type",
+			        from: type,
 			        localField: "_id",
 			        foreignField: "type_main",
 			        as: "type_info"
@@ -987,7 +1097,8 @@ app.get("/buy_now", function(req, res){
                         user: req.user,
                         product_booking_data: productBooking,
                         news_id: null,
-                        news_data:res_news
+                        news_data:res_news,
+                        language:language
                       });
                       }
                     });
@@ -1014,6 +1125,13 @@ app.post("/buy_now_next_step", function(req, res){
 	var productBuyList = [];
 	var productDetail;
 	var totalPrice = 0;
+  var cookieLanguage = req.cookies.cookie_language;
+  var language;
+  if(cookieLanguage) {
+    language = myCache.get(cookieLanguage);
+  } else {
+    language = "vi";
+  }
 	connection.when('available', function (err, db) {
     autoIncrement.getNextSequence(db, 'product_booking', function (err, autoIndex) {
       var collection = db.collection('product_booking');
@@ -1095,10 +1213,21 @@ app.post("/buy_now_next_step", function(req, res){
 	}
   var resultTmp;
 	connection.when('available', function (err, db) {
-    var collectionProduct = db.collection('product');
-		var collectionType = db.collection('type_main');
-    var collectionNews = db.collection('news');
-    collectionProduct.find().toArray
+    var collection;
+    var collectionType;
+    var collectionNews;
+    var type ="type";
+    if (language == "vi") {
+      collection = db.collection('product');
+      collectionType = db.collection('type_main');
+      collectionNews = db.collection('news');
+    } else {
+      collection = db.collection('product_en');
+      collectionType = db.collection('type_main_en');
+      collectionNews = db.collection('news_en');
+      type = "type_en";
+    }
+    collection.find().toArray
     (
       function (err, document) {
         if (document.length) {
@@ -1108,7 +1237,7 @@ app.post("/buy_now_next_step", function(req, res){
         }
     		collectionType.aggregate([{
         	$lookup: {
-            from: "type",
+            from: type,
             localField: "_id",
             foreignField: "type_main",
             as: "type_info"
@@ -1145,7 +1274,8 @@ app.post("/buy_now_next_step", function(req, res){
                         nextPager: 1,
                         product_booking_data: productBooking,
                         news_id: null,
-                        news_data:res_news
+                        news_data:res_news,
+                        language:language
                       });
                       productData.length =0;
                     }
@@ -1167,10 +1297,26 @@ app.get("/product_booking_detail", function(req, res){
 	if(cookie != undefined && myCache.get(cookie) != undefined) {
 		total = myCache.get(cookie).length;
 	}
+  var cookieLanguage = req.cookies.cookie_language;
+  var language;
+  if(cookieLanguage) {
+    language = myCache.get(cookieLanguage);
+  } else {
+    language = "vi";
+  }
 	connection.when('available', function (err, db) {
-		var collectionType = db.collection('type_main');
+    var collectionType;
+    var collectionNews;
+    var type ="type";
+    if (language == "vi") {
+      collectionType = db.collection('type_main');
+      collectionNews = db.collection('news')
+    } else {
+      collectionType = db.collection('type_main_en');
+      collectionNews = db.collection('news_en')
+      type = "type_en";
+    }
 		var colectionBooking = db.collection('product_booking');
-    var collectionNews = db.collection('news');
 		colectionBooking.findOne({'_id': parseInt(req.query.id)}, function(err, document) {
 			var totalPrice = 0;
 			for (var i = 0; i < document.info_booking.length; i++) {
@@ -1180,7 +1326,7 @@ app.get("/product_booking_detail", function(req, res){
 			}
     	collectionType.aggregate([{
 	    	$lookup: {
-	        from: "type",
+	        from: type,
 	        localField: "_id",
 	        foreignField: "type_main",
 	        as: "type_info"
@@ -1203,7 +1349,8 @@ app.get("/product_booking_detail", function(req, res){
                         user: req.user,
                         product_booking_data: productBooking,
                         news_id: null,
-                        news_data:res_news
+                        news_data:res_news,
+                        language:language
                       });
                       }
                     });
@@ -1445,7 +1592,12 @@ app.get("/admin_setting", function(req, res){
 
 app.post('/admin_product',multer().array(), function (req, res) {
   connection.when('available', function (err, db) {
-    var collection = db.collection('product');
+    var collection;
+    if (language == "vi") {
+      collection = db.collection('product');
+    } else {
+      collection = db.collection('product_en');
+    }
     if(req.body.id) {
       var id = parseInt(req.body.id);
       collection.find({"_id": id}).toArray(
@@ -1511,8 +1663,15 @@ app.post('/admin_user',multer().array(), function (req, res) {
 
 app.post('/product_info_edit',multer().array(), function (req, res) {
   connection.when('available', function (err, db) {
-    var collection = db.collection('product');
-    var collectionType = db.collection('type');
+    var collection;
+    var collectionType;
+    if (language == "vi") {
+      collection = db.collection('product');
+      collectionType = db.collection('type_main');
+    } else {
+      collection = db.collection('product_en');
+      collectionType = db.collection('type_main_en');
+    }
     var collectionTypeMain = db.collection('type_main');
     collection.findOne({'_id': parseInt(req.body.productId)}, function(err, document) {
       var type = document.type.type;

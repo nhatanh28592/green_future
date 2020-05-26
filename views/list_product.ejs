@@ -1,5 +1,9 @@
 <section class="container padding-top-1x" style="background-color:white">
+<% if(language == "vi") { %>
 <h3 class="text-center mb-30" style="font-weight: bold;">SẢN PHẨM</h3>
+<% } else { %>
+<h3 class="text-center mb-30" style="font-weight: bold;">GRASS STRAWS PRODUCT</h3>
+<% } %>
 <% if(products.length == 0){ %>
 	<div style="color:red" class="text-center">Không tìm thấy sản phẩm nào ! </div><br>
 <% }%> 
@@ -24,7 +28,11 @@
             </div></a>
 			<div class="card-body text-center">
                 <h4 class="card-title" style="color:blue"><%= product.info_product.name %></h4>
-                <a class="btn btn-outline-primary btn-sm" href="product_details?productId=<%= product._id %>&type_main=<%= product.type.type_main %>&type=<%= product.type.type %>">Xem Sản Phẩm</a>
+                <% if(language == "vi") { %>
+                	<a class="btn btn-outline-primary btn-sm" href="product_details?productId=<%= product._id %>&type_main=<%= product.type.type_main %>&type=<%= product.type.type %>">Xem Sản Phẩm</a>
+				<% } else { %>
+					<a class="btn btn-outline-primary btn-sm" href="product_details?productId=<%= product._id %>&type_main=<%= product.type.type_main %>&type=<%= product.type.type %>">View Product</a>
+				<% } %>
             </div>
 		</div>
 	</div>

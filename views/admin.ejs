@@ -251,6 +251,13 @@
 	          <form action="add_new_product" method="POST" role="form" enctype="multipart/form-data">
 
 				<div class="form-group">
+					<label>Ngôn ngữ:</label>
+					<div class="radio">
+				      <label><input type="radio" name="language" value="0" checked>VN</label>
+				    </div>
+				    <div class="radio">
+				      <label><input type="radio" name="language" value="1">EN</label>
+				    </div>
 					<label>Loại thiết bị:</label>
 					<select class="form-control" id="type_main" name="type_main">
 						<% type_mains.forEach(function(type_main) { %>

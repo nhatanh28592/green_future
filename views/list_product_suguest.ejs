@@ -1,5 +1,9 @@
 <section class="container padding-top-1x" style="background-color:white">
-<h3 class="text-center mb-30"style="font-weight: bold;">SẢN PHẨM LIÊN QUAN</h3>
+<% if(language == "vi") { %>
+	<h3 class="text-center mb-30"style="font-weight: bold;">SẢN PHẨM LIÊN QUAN</h3>
+<% } else { %>
+	<h3 class="text-center mb-30"style="font-weight: bold;">RELATED PRODUCTS</h3>
+<% } %>
 <% if(products.length == 0){ %>
 	<div style="color:red" class="text-center">Không tìm thấy sản phẩm nào ! </div><br>
 <% }%> 
@@ -22,7 +26,12 @@
 			  <h3 class="product-title"><a href="product_details?productId=<%= product._id %>&type_main=<%= product.type.type_main %>&type=<%= product.type.type %>"><%= product.info_product.name %></a></h3>
 			  <div class="product-buttons">
 				<button class="btn btn-outline-secondary btn-sm btn-wishlist" data-toggle="tooltip" title="" data-original-title="Whishlist"><i class="icon-heart"></i></button>
-				<a class="btn btn-outline-primary btn-sm" href="product_details?productId=<%= product._id %>&type_main=<%= product.type.type_main %>&type=<%= product.type.type %>">Xem Sản Phẩm</a>		  </div>
+				<% if(language == "vi") { %>
+					<a class="btn btn-outline-primary btn-sm" href="product_details?productId=<%= product._id %>&type_main=<%= product.type.type_main %>&type=<%= product.type.type %>">Xem Sản Phẩm</a>
+				<% } else { %>
+					<a class="btn btn-outline-primary btn-sm" href="product_details?productId=<%= product._id %>&type_main=<%= product.type.type_main %>&type=<%= product.type.type %>">View Product</a>
+				<% } %>
+				</div>
 			</div>
 		</div>
 	</div>

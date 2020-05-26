@@ -37,7 +37,8 @@
 <%- include wellcome.ejs %>
 <div class="offcanvas-wrapper" style="background-color: #f5f5f5;">
 <section class="container padding-top-1x" style="background-color: white;">
-	<h3 class="text-center mb-30">XÁC NHẬN ĐƠN HÀNG</h3>
+	<% if(language == "vi") { %>
+		<h3 class="text-center mb-30">XÁC NHẬN ĐƠN HÀNG</h3>
 		<div class="row">
 		<div class="col-md-6 col-sm-6" style="">
 			<div class="card mb-30">	
@@ -109,6 +110,81 @@
 			</div>
 		</div>
 		</div>		 
+	<% } else { %>
+		<h3 class="text-center mb-30">CONFIRM ORDER</h3>
+		<div class="row">
+		<div class="col-md-6 col-sm-6" style="">
+			<div class="card mb-30">	
+		
+			  <form id="buy_form" action="buy_now_next_step" method="POST" role="form">
+			    <div style="padding:15px"> 
+			    <h4 style="color:#FF7F50">DELIVERY ADDRESS</h4>
+			    <div class="form-group" style="">
+			      <label for="email">Email <span style="color:red;font-size:20px">*</span></label>
+			      <input type="email" class="form-control" name="email" id="email" placeholder="Nhập email" required>
+			    </div>
+			    <div class="form-group">
+			      <label for="name">Name <span style="color:red;font-size:20px">*</span></label>
+			      <input type="text" class="form-control" name="name" id="name" placeholder="Nhập tên" required>
+			    </div>
+				<div class="form-group">
+			      <label for="name">Phone <span style="color:red;font-size:20px">*</span> </label>
+			      <input type="text" class="form-control" name="mobile" id="mobile" placeholder="Nhập số điện thoại" required>
+			      <div style="display:none" class="alert alert-danger" id="errmsg_mobile">
+				  </div>
+			    </div>
+				<div class="form-group">
+				  <label for="comment">Delivery address (Please input correct) <span style="color:red;font-size:20px">*</span></label>
+				  <textarea class="form-control" rows="2" id="address" name="address" required></textarea>
+				</div>
+				<div class="form-group">
+					<span class="" style="color:red">
+				      <input type="hidden" value="1" name="pay_method"> 
+				      Payment on delivery
+				    </span>
+				</div>
+				<input type="hidden" value="0" name="delivery_flag"> 
+			    <button type="submit" class="btn btn-success text-center">ORDER</button>
+			    </div>
+			  </form>
+			  </div>
+		</div>
+
+		<div class="col-md-6 col-sm-6" style="">	
+			<div class="card mb-30">
+			<div style="padding:10px">
+			<h4 style="color:#FF7F50">ORDER INFORMATION:</h4>
+			<table class="table table-bordered">
+			<thead>
+			  <tr>
+			    <th>Product</th>
+			    <th>Number</th>
+			    <th>Option</th>
+			  </tr>
+			</thead>
+			<tbody>
+				<% products.forEach(function(product) { %>
+				<% product.product_info.forEach(function(info, index) { %>
+					<tr>
+				     	<td><b><%= info.name %></b><img src="upload/<%= info.main_file %>" width="80px" height="80px"></td>
+				    	<td><%= info.number %></td>
+				    	<td>
+				    		<button type="button" class="btn-delete">
+								<i class="icon-delete"></i>
+					        </button>
+					        <input type="hidden" name="id" value="<%= index %>">
+				    	</td>
+					</tr>
+				<% }); %>
+				<% }); %>
+			</tbody>
+			</table>
+			</div>
+			</div>
+		</div>
+		</div>		 
+	<% } %>
+	
 	</section>
 </div>
 <div class="offcanvas-wrapper">

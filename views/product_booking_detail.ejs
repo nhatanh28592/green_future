@@ -23,7 +23,8 @@
 <%- include wellcome.ejs %>
 <div class="offcanvas-wrapper" style="background-color: #f5f5f5;">
 <section class="container padding-top-1x" style="background-color:white;">
-	<h3 class="text-center mb-30">THÔNG TIN CHI TIẾT ĐƠN HÀNG</h3>
+	<% if(language == "vi") { %>
+		<h3 class="text-center mb-30">THÔNG TIN CHI TIẾT ĐƠN HÀNG</h3>
 	<div class="row">
 	<div class="col-md-6 card col-sm-6" style="">
 	  <br>
@@ -67,10 +68,7 @@
 			      <tr style="background-color: aliceblue;">
 			      	<th style="width:80px">Hình ảnh</th>
 			        <th>Sản phẩm</th>
-			        <th>Màu sắc</th>
 			        <th>Số lượng</th>
-			        <th>Đơn giá (VND)</th>
-			        <th>Thành tiền (VND)</th>
 			      </tr>
 			    </thead>
 			    <tbody>
@@ -79,21 +77,81 @@
 						<tr>
 						    <td><img src="upload/<%= info.main_file %>" width="80px" height="80px"></td>
 					     	<td><%= info.name %></td>
-					     	<td style="background-color:<%= info.color %>"></td>
 					    	<td><%= info.number %></td>
-					    	<td class="money_format"><%= info.price %></td>
-					    	<td class="money_format"><%= info.price*info.number %></td>
 						</tr>
 					<% }); %>
 					<% }); %>
 			    </tbody>
 			  </table>
-			  <span>Tổng tiền: </span><span style="color:red" class="money_format"><%= total_price %></span>
 		</div>
 	</div>
+	<% } else { %>
+		<h3 class="text-center mb-30">DETAIL ORDER</h3>
+	<div class="row">
+	<div class="col-md-6 card col-sm-6" style="">
+	  <br>
+	  <h4 style="color:#FF7F50">CUSTOMER INFORMATION:</h4>
+	  <form id="buy_form" action="buy_now_next_step" method="POST" onsubmit="return validate_activity();" role="form">
+	  	<table class="table table-bordered">
+		    <thead>
+		    </thead>
+		    <tbody>
+				<tr>
+			     	<td><b>Email</b></td>
+			    	<td><%=product_booking.info_personal.email%></td>
+				</tr>
+				<tr>
+			     	<td><b>Name</b></td>
+			    	<td><%=product_booking.info_personal.name%></td>
+				</tr>				
+				<tr>
+			     	<td><b>Phone</b></td>
+			    	<td><%=product_booking.info_personal.mobile%></td>
+				</tr>
+				<tr>
+			     	<td><b>Address</b></td>
+			    	<td><%=product_booking.info_personal.address%></td>
+				</tr>
+				<tr>
+			     	<td><b>Option</b></td>
+			    	<td>
+					    Payment on delivery
+			    	</td>
+				</tr>
+		    </tbody>
+		</table>
+	  </form>
+	</div>
+  	<div class="col-md-6 card col-sm-6" style="">	
+		<br>	
+		<h4 style="color:#FF7F50">ORDER INFORMATION:</h4>
+			  <table class="table table-bordered">
+			    <thead>
+			      <tr style="background-color: aliceblue;">
+			      	<th style="width:80px">Image</th>
+			        <th>product/th>
+			        <th>Number</th>
+			      </tr>
+			    </thead>
+			    <tbody>
+					<% product_booking.info_booking.forEach(function(product) { %>
+					<% product.product_info.forEach(function(info) { %>
+						<tr>
+						    <td><img src="upload/<%= info.main_file %>" width="80px" height="80px"></td>
+					     	<td><%= info.name %></td>
+					    	<td><%= info.number %></td>
+						</tr>
+					<% }); %>
+					<% }); %>
+			    </tbody>
+			  </table>
+		</div>
+	</div>
+	<% } %>
+	
 </section>
 <section class="container padding-top-3x">
-	<h4 class="text-center mb-30" style="color:red">CẢM ƠN QUÝ KHÁCH HÀNG ĐÃ ĐẶT HÀNG CỦA CHÚNG TÔI !</h4>
+	<h4 class="text-center mb-30" style="color:red">THANK YOU !</h4>
 </section>
 </div>
 <%- include footer.ejs %>

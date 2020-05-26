@@ -1,6 +1,10 @@
 <div class="offcanvas-wrapper" style="background-color: #f5f5f5;">
 <section class="container padding-top-1x" style="background-color: white;">
+<% if(language == "vi") { %>
 <h3 class="text-center mb-30"style="font-weight: bold;">GIẤY CHỨNG NHẬN</h3>
+<% } else { %>
+<h3 class="text-center mb-30"style="font-weight: bold;">CERTIFICATE TEST</h3>
+<% } %>
   <div class="row">
     <div class="col-lg-4 col-md-4 text-center">
       <img src="img/giay_cn_1.png" alt="Green Future VN" style="margin-top:10px;width:100%;height:250px;border:solid 3px green;border-radius: 5px;">
@@ -16,7 +20,11 @@
 </div>
 <div class="offcanvas-wrapper" style="background-color: #f5f5f5;">
 <section class="container padding-top-1x" style="background-color:white;">
+<% if(language == "vi") { %>
 <h3 class="text-center mb-30"style="font-weight: bold;">KHÁCH HÀNG TIÊU BIỂU</h3>
+<% } else { %>
+<h3 class="text-center mb-30"style="font-weight: bold;">TYPICAL CUSTOMERS</h3>
+<% } %>
   <div class="row">
     <div class="col-lg-4 col-md-4 text-center">
       <img src="img/kh_1.jpg" alt="Green Future VN" style="margin-top:10px;width:100%;height:230px;border:solid 3px green;border-radius: 5px;">
@@ -45,16 +53,30 @@
 
 <div class="offcanvas-wrapper" style="background-color: #f5f5f5;">
 <section class="container padding-top-1x" style="background-color: white;">
-<h3 class="text-center mb-30"style="font-weight: bold;">CAM KẾT VỀ SẢN PHẨM</h3>
+<% if(language == "vi") { %>
+  <h3 class="text-center mb-30"style="font-weight: bold;">CAM KẾT VỀ SẢN PHẨM</h3>
+<% } else { %>
+  <h3 class="text-center mb-30"style="font-weight: bold;">PRODUCT COMMITMENT</h3>
+<% } %>
   <div class="row">
     <div class="col-lg-6 col-md-6 text-center">
-      <ul class="text-left" style=" font-family: 'times new roman', times, serif; font-size: 18pt;color: black; margin-left: 10px;">
+      <% if(language == "vi") { %>
+        <ul class="text-left" style=" font-family: 'times new roman', times, serif; font-size: 18pt;color: black; margin-left: 10px;">
         <li>Sản phẩm 100%  tự nhiên.</li>
         <li>Không hóa chất trong quá trình sản xuất.</li>
         <li>Sản phẩm có giấy chứng nhận SGS, QUATEST 3, EROFINS, giấy tự công bố.</li>
         <li>Sản phẩm  được tiệt trùng bằng tia UV.</li>
         <li>Phân hủy 100% trong môi trường tự nhiên.</li>
       </ul>
+      <% } else { %>
+        <ul class="text-left" style=" font-family: 'times new roman', times, serif; font-size: 18pt;color: black; margin-left: 10px;">
+        <li>100% natural products.</li>
+        <li>No chemicals used during manufacturing process.</li>
+        <li>Products with SGS, QUATEST 3 certificate, EROFINS, self-declaration paper.</li>
+        <li>Products are sterilized by UV light.</li>
+        <li>100% decomposition in the natural environment.</li>
+      </ul>
+      <% } %>
     </div>
     <div class="col-lg-6 col-md-6 text-center">
       <img src="img/dung_thu.jpg" alt="Green Future VN" style="width:100%;height:100%;border:solid 1px #8a8383;border-radius: 5px;">
@@ -64,7 +86,11 @@
   </div>
 <div class="offcanvas-wrapper" style="background-color: #f5f5f5;">
 <section class="container padding-top-1x" style="background-color: white;">
+<% if(language == "vi") { %>
 <h3 class="text-center mb-30"style="font-weight: bold;">TIN TỨC</h3>
+<% } else { %>
+<h3 class="text-center mb-30"style="font-weight: bold;">NEWS</h3>
+<% } %>
   <% news_data.forEach(function(news, index) { %>
   <% if(news_id){ %>
     <% if(news._id == news_id){ %>
@@ -73,14 +99,21 @@
           <h4 class=""style="font-weight: bold;font-family: 'times new roman', times, serif; font-size: 20pt;color:green"><%= news.title %></h4>
           <div style="white-space: pre-wrap;font-family: 'times new roman', times, serif; font-size: 14pt;"><%= news.info %></div>
           <br>
-          <h4 class=""style="font-weight: bold;font-family: 'times new roman', times, serif; font-size: 14pt;color:black">LIÊN HỆ</h4>
+          <% if(language == "vi") { %>
+            <h4 class=""style="font-weight: bold;font-family: 'times new roman', times, serif; font-size: 14pt;color:black">LIÊN HỆ</h4>
             <p class=""style="font-family: 'times new roman', times, serif; font-size: 14pt;color:black">Công Ty TNHH Sản Xuất Và Thương Mại Green Future Việt Nam</p>
+            <p class=""style="font-family: 'times new roman', times, serif; font-size: 14pt;color:black">Địa chỉ: 350/47/3 Lê Đức Thọ, Phường 6, Quận Gò Vấp, Tp Hồ Chí Minh.</p>
+          <% } else { %>
+            <h4 class=""style="font-weight: bold;font-family: 'times new roman', times, serif; font-size: 14pt;color:black">CONTACT</h4>
+            <p class=""style="font-family: 'times new roman', times, serif; font-size: 14pt;color:black">GREEN FUTUREVN CO., LTD</p>
+            <p class=""style="font-family: 'times new roman', times, serif; font-size: 14pt;color:black">Address: 350/47/3 Le Duc Tho Street, Six  Ward, Go Vap District, Ho Chi Minh City, Viet Nam.</p>
+          <% } %>
             <p class=""style="font-family: 'times new roman', times, serif; font-size: 14pt;color:black">Phone: 0986.399.409 - 0973.916.295</p>
-            <p class=""style="font-family: 'times new roman', times, serif; font-size: 14pt;color:black">ĐC: 350/47/3 Lê Đức Thọ, Phường 6, Quận Gò Vấp, Tp Hồ Chí Minh.</p>
+            <p class=""style="font-family: 'times new roman', times, serif; font-size: 14pt;color:black">WhatsApp / Viber / Zalo: +84986399409</p>
             <ul class="list-unstyled text-sm"style="font-family: 'times new roman', times, serif; font-size: 14pt;color:black">
               <li><span class="opacity-50">Monday-Sunday:</span> 7.00 am - 12.00 pm</li>
             </ul>
-            <p><a class="" href="#">Info@greenfuturestraw.com</a></p>
+            <p>Email: <a class="" href="#">Info@greenfuturestraw.com</a></p>
         </div>
         <div class="col-lg-4 col-md-4 text-center">
           <% news.file.forEach(function(file, index) { %>
@@ -96,14 +129,21 @@
           <h4 class=""style="font-weight: bold;font-family: 'times new roman', times, serif; font-size: 20pt;color:green"><%= news.title %></h4>
           <div style="white-space: pre-wrap;font-family: 'times new roman', times, serif; font-size: 14pt;"><%= news.info %></div>
           <br>
-          <h4 class=""style="font-weight: bold;font-family: 'times new roman', times, serif; font-size: 14pt;color:black">LIÊN HỆ</h4>
+          <% if(language == "vi") { %>
+            <h4 class=""style="font-weight: bold;font-family: 'times new roman', times, serif; font-size: 14pt;color:black">LIÊN HỆ</h4>
             <p class=""style="font-family: 'times new roman', times, serif; font-size: 14pt;color:black">Công Ty TNHH Sản Xuất Và Thương Mại Green Future Việt Nam</p>
+            <p class=""style="font-family: 'times new roman', times, serif; font-size: 14pt;color:black">Địa chỉ: 350/47/3 Lê Đức Thọ, Phường 6, Quận Gò Vấp, Tp Hồ Chí Minh.</p>
+          <% } else { %>
+            <h4 class=""style="font-weight: bold;font-family: 'times new roman', times, serif; font-size: 14pt;color:black">CONTACT</h4>
+            <p class=""style="font-family: 'times new roman', times, serif; font-size: 14pt;color:black">GREEN FUTUREVN CO., LTD</p>
+            <p class=""style="font-family: 'times new roman', times, serif; font-size: 14pt;color:black">Address: 350/47/3 Le Duc Tho Street, Six  Ward, Go Vap District, Ho Chi Minh City, Viet Nam.</p>
+          <% } %>
             <p class=""style="font-family: 'times new roman', times, serif; font-size: 14pt;color:black">Phone: 0986.399.409 - 0973.916.295</p>
-            <p class=""style="font-family: 'times new roman', times, serif; font-size: 14pt;color:black">ĐC: 350/47/3 Lê Đức Thọ, Phường 6, Quận Gò Vấp, Tp Hồ Chí Minh.</p>
+            <p class=""style="font-family: 'times new roman', times, serif; font-size: 14pt;color:black">WhatsApp / Viber / Zalo: +84986399409</p>
             <ul class="list-unstyled text-sm"style="font-family: 'times new roman', times, serif; font-size: 14pt;color:black">
               <li><span class="opacity-50">Monday-Sunday:</span> 7.00 am - 12.00 pm</li>
             </ul>
-            <p><a class="" href="#">Info@greenfuturestraw.com</a></p>
+            <p>Email: <a class="" href="#">Info@greenfuturestraw.com</a></p>
         </div>
         <div class="col-lg-4 col-md-4 text-center">
           <% news.file.forEach(function(file, index) { %>
@@ -125,20 +165,30 @@
         <div class="col-lg-3 col-md-6">
           <!-- Contact Info-->
           <section class="widget widget-light-skin">
+          <% if(language == "vi") { %>
             <h3 class="widget-title text-white"style="font-weight: bold;">LIÊN HỆ</h3>
             <p class="text-white">Công Ty TNHH Sản Xuất Và Thương Mại Green Future Việt Nam</p>
-            <p class="text-white">Phone: 0986.399.409 - 0973.916.295</p>
             <p class="text-white">ĐC: 350/47/3 Lê Đức Thọ, Phường 6, Quận Gò Vấp, Tp Hồ Chí Minh.</p>
+          <% } else { %>
+            <h3 class="widget-title text-white"style="font-weight: bold;">CONTACT</h3>
+            <p class="text-white">GREEN FUTUREVN CO., LTD</p>
+            <p class="text-white">Address: 350/47/3 Le Duc Tho Street, Six  Ward, Go Vap District, Ho Chi Minh City, Viet Nam.</p>
+          <% } %>
+            <p class="text-white">Phone: 0986.399.409 - 0973.916.295</p>
             <ul class="list-unstyled text-sm text-white">
               <li><span class="opacity-50">Monday-Sunday:</span> 7.00 am - 12.00 pm</li>
             </ul>
-            <p><a class="navi-link-light" href="#">Info@greenfuturestraw.com</a></p><a class="social-button shape-circle sb-facebook sb-light-skin" href="#"><i class="socicon-facebook"></i></a><a class="social-button shape-circle sb-twitter sb-light-skin" href="#"><i class="socicon-twitter"></i></a><a class="social-button shape-circle sb-instagram sb-light-skin" href="#"><i class="socicon-instagram"></i></a><a class="social-button shape-circle sb-google-plus sb-light-skin" href="#"><i class="socicon-googleplus"></i></a>
+            <p>Email: <a class="navi-link-light" href="#">Info@greenfuturestraw.com</a></p><a class="social-button shape-circle sb-facebook sb-light-skin" href="#"><i class="socicon-facebook"></i></a><a class="social-button shape-circle sb-twitter sb-light-skin" href="#"><i class="socicon-twitter"></i></a><a class="social-button shape-circle sb-instagram sb-light-skin" href="#"><i class="socicon-instagram"></i></a><a class="social-button shape-circle sb-google-plus sb-light-skin" href="#"><i class="socicon-googleplus"></i></a>
           </section>
         </div>
         <div class="col-lg-3 col-md-6">
           <!-- Mobile App Buttons-->
           <section class="widget widget-light-skin">
-            <h3 class="widget-title text-white"style="font-weight: bold;">CỬA HÀNG</h3>
+            <% if(language == "vi") { %>
+              <h3 class="widget-title text-white"style="font-weight: bold;">CỬA HÀNG</h3>
+            <% } else { %>
+              <h3 class="widget-title text-white"style="font-weight: bold;">STORE</h3>
+            <% } %>
             <a class="mb-light-skin" target="_blank" href="https://tiki.vn/cua-hang/green-future-vn">
             <span class="mb-subtitle">TIKI</span>
             <br>
@@ -161,7 +211,11 @@
         <div class="col-lg-3 col-md-6">
           <!-- About Us-->
           <section class="widget widget-links widget-light-skin">
-            <h3 class="widget-title text-white"style="font-weight: bold;">MẠNG XÃ HỘI</h3>
+            <% if(language == "vi") { %>
+              <h3 class="widget-title text-white"style="font-weight: bold;">MẠNG XÃ HỘI</h3>
+            <% } else { %>
+              <h3 class="widget-title text-white"style="font-weight: bold;">SOCIAL NETWORK</h3>
+            <% } %>
             <a class="mb-light-skin" target="_blank" href="https://www.facebook.com/onghutcovietnam">
             <span class="mb-subtitle">FACEBOOK</span>
             <br>
@@ -184,7 +238,11 @@
         <div class="col-lg-3 col-md-6">
           <!-- Account / Shipping Info-->
           <section class="widget widget-links widget-light-skin">
-            <h3 class="widget-title text-white"style="font-weight: bold;">TIN TỨC</h3>
+            <% if(language == "vi") { %>
+              <h3 class="widget-title text-white"style="font-weight: bold;">TIN TỨC</h3>
+            <% } else { %>
+              <h3 class="widget-title text-white"style="font-weight: bold;">NEWS</h3>
+            <% } %>
             <ul>
             <% news_data.forEach(function(news, index) { %>
               <li><a style="background: green; font-size: 12pt;color: white;font-family: 'times new roman', times, serif;" href="/?newsId=<%= news._id %>"><%=news.title%></a></li>
@@ -211,7 +269,7 @@
         </div>
       </div>
       <!-- Copyright-->
-      <p class="footer-copyright">© copyright greenfuturevn.com.vn. Design by nhatanh285</a></p>
+      <p class="footer-copyright">© copyright greenfuturestraw.com </a></p>
     </div>
   </footer>
 </div>

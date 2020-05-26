@@ -15,12 +15,35 @@
       <div class="site-branding">
         <div class="inner">
           <a class="site-logo" style="font-weight:bold;color:green" href="/"><img src="img/logo.png" alt="Green Future VN" style="width:120px;height:85px;"></a>
+          <% if(language == "vi") { %>
+          <form action="change_language" method="POST" role="form">
+            <div class="form-group">
+              <input type="hidden" value="en" name="language" id="language">
+            </div>
+            <button type="submit">
+              <img src="img/en_logo.png" alt="Green Future VN" style="width:50px;height:35px;">
+            </button>
+          </form>
+          <% } else { %>
+            <form action="change_language" method="POST" role="form">
+            <div class="form-group">
+              <input type="hidden" value="vi" name="language" id="language">
+            </div>
+            <button type="submit">
+              <img src="img/vn_logo.png" alt="Green Future VN" style="width:50px;height:35px;">
+            </button>
+          </form>
+          <% } %>
         </div>
       </div>
       <!-- Main Navigation-->
       <nav class="site-menu">
         <ul>
-          <li class="has-megamenu active"><a href="/"><span>TRANG CHỦ</span></a>
+          <% if(language == "vi") { %>
+            <li class="has-megamenu active"><a href="/"><span>TRANG CHỦ</span></a>
+          <% } else { %>
+            <li class="has-megamenu active"><a href="/"><span>HOME</span></a>
+          <% } %>
           </li>
           <% types.forEach(function(type) { %>
 		      <li><a><span style="color:green;font-weight:bold"><%= type.name %></span></a>
@@ -115,14 +138,26 @@
       </div>
       <div class="offcanvas-wrapper" style="background-color: #f5f5f5;">
         <section class="container padding-top-1x" style="background-color: white;">
-        <h3 class="text-center"style="font-weight: bold; font-size: 36pt;color: green;font-family: 'times new roman', times, serif;">Ống hút cỏ Green Future</h3>
+        <% if(language == "vi") { %>
+          <h3 class="text-center"style="font-weight: bold; font-size: 36pt;color: green;font-family: 'times new roman', times, serif;">Ống hút cỏ Green Future</h3>
+        <% } else { %>
+          <h3 class="text-center"style="font-weight: bold; font-size: 36pt;color: green;font-family: 'times new roman', times, serif;">Green Future straw</h3>
+        <% } %>
           <div class="row">
             <div class="col-lg-8 col-md-8" style="color:black; font-size:16px">
+            <% if(language == "vi") { %>
               <div style="white-space: pre-wrap;font-family: 'times new roman', times, serif; font-size: 14pt;">
 Green Future Việt Nam là công ty sản xuất ống hút cỏ từ năm 2018. Sản phẩm của chúng tôi đã có mặt tại các thị trường lớn như: Anh, Mỹ, Đức, Úc, Phần Lan, Canada, Nhật Bản, Hàn Quốc, Thái Lan,Hong Kong…
 Với tầm nhìn <span style="color:green;font-weight: bold;">“Đừng đợi thay đổi, hãy là người thay đổi”</span> Green Future mong muốn tạo ra một xu hướng sữ dụng các loại ống hút tự nhiên thay thế cho ống hút nhựa. Thông qua đó, khách hàng sẽ đóng góp vào việc giảm thiểu tác động của ống hút nhựa và rác thải nhựa ra môi trường, đặt biệt là các kênh rạch và các đại dương.
 Chúng tôi đặt niềm hy vọng một <span style="color:green;font-weight: bold;">“tương lai xanh”</span> vào mỗi ống hút cỏ được sản xuất và mong rằng người sữ dụng sản phẩm của chúng tôi có thể góp phần bảo vệ môi trường và tạo ra một tương lai xanh cho những thế hệ sau này.
               </div>
+            <% } else { %>
+                <div style="white-space: pre-wrap;font-family: 'times new roman', times, serif; font-size: 14pt;">
+Green Future Viet Nam is the manufacturer of grass straws since 2018. Through our products, Green Future would like to convey the green spirit into the community and encourage people to build the green world.
+Based on the vision <span style="color:green;font-weight: bold;">“Don’t wait for change, be the change”</span>, our ambition is  to create a trend to use natural straws instead of plastic ones and contribute to reducing the effect of plastic straws and plastic wastes on our environment, especially the ocean and tiny species.
+We put the spirit <span style="color:green;font-weight: bold;">“Green Future”</span> into each straw and hope that people experiencing our products can understand the value of protecting the environment in our every single item.
+              </div>
+            <% } %>
             </div>
             <div class="col-lg-4 col-md-4 text-center">
               <img src="img/gt_cty.jpg" alt="Green Future VN" style="margin-top:15px;width:100%;border-radius: 10px;">

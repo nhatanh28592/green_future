@@ -29,18 +29,27 @@
 <%- include wellcome.ejs %>
 <div class="offcanvas-wrapper" style="background-color: #f5f5f5;">
 <section class="container padding-top-1x" style="background-color: white;">
-	<h3 class="text-center mb-30">XÁC NHẬN ĐƠN HÀNG</h3>
+	<% if(language == "vi") { %>
+		<h3 class="text-center mb-30">XÁC NHẬN ĐƠN HÀNG</h3>
+	<% } else { %>
+		<h3 class="text-center mb-30">CONFIRM ORDER</h3>
+	<% } %>
 		<div class="row">
 		<div class="col-md-6 card col-sm-6" style="">
 		    <br>
 			<div>
-		      <p style="color: red">Dặt hàng thành công, 1 email đã gởi đến bạn, chúng tôi sẽ liên hệ với bạn để xác nhận, xin chân thành cảm ơn đã sử dụng dịch vụ ! </p>
+				<% if(language == "vi") { %>
+					<p style="color: red">Dặt hàng thành công, 1 email đã gởi đến bạn, chúng tôi sẽ liên hệ với bạn để xác nhận, xin chân thành cảm ơn đã sử dụng dịch vụ ! </p>
+				<% } else { %>
+					<p style="color: red">Order success, Please check your email! </p>
+				<% } %>
 			</div>
 		</div>
 
 		<div class="col-md-6 card col-sm-6" style="">	
 			<br>	
-			<h4 style="color:#FF7F50">THÔNG TIN ĐƠN HÀNG:</h4>
+			<% if(language == "vi") { %>
+				<h4 style="color:#FF7F50">THÔNG TIN ĐƠN HÀNG:</h4>
 			<table class="table table-bordered">
 			    <thead>
 			      <tr>
@@ -61,6 +70,29 @@
 					<% }); %>
 			    </tbody>
 			  </table>
+			<% } else { %>
+				<h4 style="color:#FF7F50">ORDER INFORMATION:</h4>
+			<table class="table table-bordered">
+			    <thead>
+			      <tr>
+			        <th>Product</th>
+			        <th>Image</th>
+			        <th>Number</th>
+			      </tr>
+			    </thead>
+			    <tbody>
+					<% products_buy.forEach(function(product) { %>
+					<% product.product_info.forEach(function(info) { %>
+						<tr>
+					     	<td><%= info.name %></td>
+					     	<td><img src="upload/<%= info.main_file %>" width="80px" height="80px"></td>
+					    	<td><%= info.number %></td>
+						</tr>
+					<% }); %>
+					<% }); %>
+			    </tbody>
+			  </table>
+			<% } %>
 		</div>
 		</div>		 
 	</section>
