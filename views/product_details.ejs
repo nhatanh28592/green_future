@@ -39,11 +39,6 @@
 					<div class="card mb-30"><a class="card-img-tiles picture" style="cursor: pointer;">
 						<div class="inner">
 							<div class="main-img"><img src="upload/<%= product.info_product.main_file %>" alt="Category"></div>
-							<div class="thumblist">
-								<% product.file.forEach(function(file, index) { %>
-										<img class="img_show" src="upload/<%= file.fileName %>" alt="Category">
-								<% }); %>
-							</div>
 			            </div></a>
 						<div class="card-body text-center">
 			                <h4 class="card-title" style="color:blue"><%= product.info_product.name %></h4>
