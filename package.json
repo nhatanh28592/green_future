@@ -21,7 +21,7 @@
     "ip": "^1.1.5",
     "jquery": "^3.2.1",
     "method-override": "^3.0.0",
-    "mongodb": "^2.2.31",
+    "mongodb": "^3.1.13",
     "mongodb-autoincrement": "^1.0.1",
     "mongoose": "^5.2.2",
     "mongoose-findorcreate": "^3.0.0",
